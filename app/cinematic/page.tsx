@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ArrowDown,
-  ArrowRight,
   ArrowUpRight,
   RotateCcw,
   Volume2,
@@ -22,13 +21,17 @@ import "./cinematic.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// --------------------------------------------------
+// CINEMATIC SCENES
+// --------------------------------------------------
+
 const scenes = [
   {
     number: "01",
     eyebrow: "THE ARRIVAL",
     title: "A different\nkind of home.",
     description: "Some places are beautiful. Others make you feel something.",
-    video: "/videos/exterior.mp4",
+  video: "/videos/exterior.mp4",
     location: "THE RESIDENCE · ADDIS ABABA",
   },
   {
@@ -36,7 +39,7 @@ const scenes = [
     eyebrow: "THE ENTRANCE",
     title: "Step into\nyour somewhere.",
     description: "Beyond the entrance, a new story begins.",
-    video: "/videos/entrance.mp4",
+   video: "/videos/entrance-fixed.mp4",
     location: "THE FIRST IMPRESSION",
   },
   {
@@ -44,7 +47,7 @@ const scenes = [
     eyebrow: "THE REVEAL",
     title: "Room to\nbreathe.",
     description: "Light, space, and thoughtful details come together.",
-    video: "/videos/living-room.mp4",
+   video: "/videos/living-room-fixed.mp4",
     location: "THE LIVING SPACE",
   },
   {
@@ -52,10 +55,14 @@ const scenes = [
     eyebrow: "THE DETAILS",
     title: "Made for\nliving.",
     description: "Discover the little things that make a place feel like yours.",
-    video: "/videos/details.mp4",
+  video: "/videos/details-fixed.mp4",
     location: "THE FINER DETAILS",
   },
 ];
+
+// --------------------------------------------------
+// PROPERTY DATA
+// --------------------------------------------------
 
 type Listing = {
   id: number;
@@ -209,6 +216,10 @@ const neighborhoods = [
   },
 ];
 
+// --------------------------------------------------
+// PAGE
+// --------------------------------------------------
+
 export default function CinematicPage() {
   const tourRef = useRef<HTMLElement>(null);
   const sceneRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -216,75 +227,139 @@ export default function CinematicPage() {
 
   const [muted, setMuted] = useState(true);
   const [activeScene, setActiveScene] = useState(0);
+
   const [purpose, setPurpose] = useState<"All" | "Buy" | "Rent">("All");
   const [category, setCategory] = useState("All");
   const [search, setSearch] = useState("");
+
+  
+  // --------------------------------------------------
+  // GSAP CINEMATIC SCENE TRANSITIONS
+  // --------------------------------------------------
 
   useEffect(() => {
     const tour = tourRef.current;
     if (!tour) return;
 
     const ctx = gsap.context(() => {
-      const panels = sceneRefs.current.filter(Boolean);
-      const copies = copyRefs.current.filter(Boolean);
+      const panels = sceneRefs.current.filter(
+        (panel): panel is HTMLDivElement => panel !== null
+      );
 
-      gsap.set(panels, { autoAlpha: 0, scale: 1.06 });
-      gsap.set(panels[0], { autoAlpha: 1, scale: 1 });
-      gsap.set(copies, { y: 45, autoAlpha: 0 });
-      gsap.set(copies[0], { y: 0, autoAlpha: 1 });
+      const copies = copyRefs.current.filter(
+        (copy): copy is HTMLDivElement => copy !== null
+      );
+
+      if (
+        panels.length !== scenes.length ||
+        copies.length !== scenes.length
+      ) {
+        return;
+      }
+
+      gsap.set(panels, {
+        autoAlpha: 0,
+        scale: 1.06,
+      });
+
+      gsap.set(panels[0], {
+        autoAlpha: 1,
+        scale: 1,
+      });
+
+      gsap.set(copies, {
+        y: 45,
+        autoAlpha: 0,
+      });
+
+      gsap.set(copies[0], {
+        y: 0,
+        autoAlpha: 1,
+      });
+
+      const transitionPositions = [0.85, 1.85, 2.85];
+      const timelineDuration = 4.1;
 
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: tour,
           start: "top top",
-          end: "+=360%",
-          scrub: 1.2,
+          end: "+=420%",
+          scrub: 1,
           pin: true,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
+
           onUpdate: (self) => {
-            const index = Math.min(
-              scenes.length - 1,
-              Math.floor(self.progress * scenes.length)
+            const timelinePosition =
+              self.progress * timelineDuration;
+
+            let currentIndex = 0;
+
+            transitionPositions.forEach((position) => {
+              if (timelinePosition >= position + 0.7) {
+                currentIndex++;
+              }
+            });
+
+            const nextScene = Math.min(
+              currentIndex,
+              scenes.length - 1
             );
-            setActiveScene(index);
+
+            setActiveScene((previous) =>
+              previous === nextScene ? previous : nextScene
+            );
           },
         },
       });
 
       for (let i = 0; i < scenes.length - 1; i++) {
-        const position = i + 0.85;
+        const position = transitionPositions[i];
 
-        timeline
-          .to(
-            panels[i],
-            {
-              autoAlpha: 0,
-              scale: 1.08,
-              duration: 0.8,
-              ease: "power2.inOut",
-            },
-            position
-          )
-          .to(
-            copies[i],
-            { y: -35, autoAlpha: 0, duration: 0.5 },
-            position
-          )
-          .to(
-            panels[i + 1],
-            {
-              autoAlpha: 1,
-              scale: 1,
-              duration: 0.9,
-              ease: "power2.out",
-            },
-            position + 0.25
-          )
-          .to(
-            copies[i + 1],
-            { y: 0, autoAlpha: 1, duration: 0.7, ease: "power3.out" },
-            position + 0.55
-          );
+        timeline.to(
+          panels[i],
+          {
+            autoAlpha: 0,
+            scale: 1.08,
+            duration: 0.8,
+            ease: "power2.inOut",
+          },
+          position
+        );
+
+        timeline.to(
+          copies[i],
+          {
+            y: -35,
+            autoAlpha: 0,
+            duration: 0.5,
+            ease: "power2.in",
+          },
+          position
+        );
+
+        timeline.to(
+          panels[i + 1],
+          {
+            autoAlpha: 1,
+            scale: 1,
+            duration: 0.9,
+            ease: "power2.out",
+          },
+          position + 0.25
+        );
+
+        timeline.to(
+          copies[i + 1],
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.7,
+            ease: "power3.out",
+          },
+          position + 0.55
+        );
       }
 
       gsap.from(".cinematic-nav", {
@@ -293,19 +368,77 @@ export default function CinematicPage() {
         duration: 1,
         ease: "power3.out",
       });
+
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
     }, tour);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+    };
   }, []);
 
-  useEffect(() => {
-    const videos =
-      document.querySelectorAll<HTMLVideoElement>(".scene-video");
+  
+// --------------------------------------------------
+// VIDEO PLAYBACK
+// --------------------------------------------------
 
-    videos.forEach((video) => {
-      video.muted = muted;
+useEffect(() => {
+  const videos = Array.from(
+    document.querySelectorAll<HTMLVideoElement>(".scene-video")
+  );
+
+  let cancelled = false;
+
+  const playActiveVideo = async () => {
+    const activeVideo = videos[activeScene];
+
+    if (!activeVideo) return;
+
+    // Pause inactive videos first.
+    videos.forEach((video, index) => {
+      if (index !== activeScene && !video.paused) {
+        video.pause();
+      }
     });
-  }, [muted]);
+
+    activeVideo.muted = muted;
+
+    try {
+      await activeVideo.play();
+
+      if (cancelled) {
+        activeVideo.pause();
+      }
+    } catch (error) {
+      if (
+        error instanceof DOMException &&
+        error.name === "AbortError"
+      ) {
+        // Expected when the user scrolls to another scene quickly.
+        return;
+      }
+
+      console.error(
+        `Scene ${activeScene + 1} playback failed:`,
+        error,
+        activeVideo.error
+      );
+    }
+  };
+
+  playActiveVideo();
+
+  return () => {
+    cancelled = true;
+  };
+}, [activeScene, muted]);
+
+
+  // --------------------------------------------------
+  // PROPERTY FILTERING
+  // --------------------------------------------------
 
   const filteredProperties = properties.filter((property) => {
     const matchesPurpose =
@@ -322,25 +455,47 @@ export default function CinematicPage() {
     return matchesPurpose && matchesCategory && matchesSearch;
   });
 
+  // --------------------------------------------------
+  // ACTIONS
+  // --------------------------------------------------
+
   const replayTour = () => {
     if (!tourRef.current) return;
 
     const top =
       tourRef.current.getBoundingClientRect().top + window.scrollY;
 
-    window.scrollTo({ top, behavior: "smooth" });
+    window.scrollTo({
+      top,
+      behavior: "smooth",
+    });
   };
 
   const chooseCategory = (name: string) => {
     const normalized = name.replace(/s$/, "");
+
     setCategory(normalized);
+
     document
       .getElementById("properties")
       ?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const clearFilters = () => {
+    setPurpose("All");
+    setCategory("All");
+    setSearch("");
+  };
+
+  // --------------------------------------------------
+  // RENDER
+  // --------------------------------------------------
+
   return (
-   <main className="cinematic-page" id="top">
+    <main className="cinematic-page" id="top">
+
+      {/* NAVIGATION */}
+
       <nav className="cinematic-nav">
         <Link href="/" className="cinematic-logo">
           ESTATE<span>IN MOTION</span>
@@ -356,8 +511,10 @@ export default function CinematicPage() {
       </nav>
 
       {/* CINEMATIC INTRO */}
+
       <section className="cinematic-tour" ref={tourRef}>
         <div className="cinematic-scenes">
+
           {scenes.map((scene, index) => (
             <div
               className="cinematic-scene"
@@ -366,15 +523,15 @@ export default function CinematicPage() {
                 sceneRefs.current[index] = el;
               }}
             >
-              <video
-                className="scene-video"
-                src={scene.video}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload={index === 0 ? "auto" : "metadata"}
-              />
+
+  <video
+  className="scene-video"
+  src={scene.video}
+  muted
+  loop
+  playsInline
+  preload="none"
+/>
 
               <div className="scene-shade" />
 
@@ -404,11 +561,16 @@ export default function CinematicPage() {
               </div>
             </div>
           ))}
+
         </div>
 
+        {/* CINEMATIC CONTROLS */}
+
         <div className="cinematic-bottom">
+
           <div className="cinematic-progress">
             <span>0{activeScene + 1}</span>
+
             <div className="progress-track">
               <div
                 className="progress-fill"
@@ -417,6 +579,7 @@ export default function CinematicPage() {
                 }}
               />
             </div>
+
             <span>04</span>
           </div>
 
@@ -429,15 +592,23 @@ export default function CinematicPage() {
             onClick={() => setMuted((value) => !value)}
             aria-label={muted ? "Unmute videos" : "Mute videos"}
           >
-            {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+            {muted ? (
+              <VolumeX size={16} />
+            ) : (
+              <Volume2 size={16} />
+            )}
+
             {muted ? "SOUND OFF" : "SOUND ON"}
           </button>
+
         </div>
       </section>
 
       {/* PROPERTY SEARCH */}
+
       <section className="property-search-section" id="properties">
         <div className="section-shell">
+
           <div className="section-kicker">
             <span>01 / FIND YOUR PLACE</span>
             <span>ADDIS ABABA · ETHIOPIA</span>
@@ -448,6 +619,7 @@ export default function CinematicPage() {
               <span className="section-eyebrow">
                 A PLACE THAT FEELS LIKE YOURS
               </span>
+
               <h2>
                 Find your <em>somewhere.</em>
               </h2>
@@ -460,6 +632,7 @@ export default function CinematicPage() {
           </div>
 
           <div className="property-search-box">
+
             <div className="purpose-switch">
               {(["All", "Buy", "Rent"] as const).map((item) => (
                 <button
@@ -473,10 +646,13 @@ export default function CinematicPage() {
             </div>
 
             <div className="search-controls">
+
               <label className="search-field">
                 <MapPin size={18} />
+
                 <span>
                   <small>LOCATION OR KEYWORD</small>
+
                   <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -488,6 +664,7 @@ export default function CinematicPage() {
               <label className="search-field category-field">
                 <span>
                   <small>PROPERTY TYPE</small>
+
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
@@ -512,17 +689,23 @@ export default function CinematicPage() {
                 <Search size={17} />
                 SEARCH HOMES
               </button>
+
             </div>
           </div>
         </div>
       </section>
 
       {/* FEATURED PROPERTIES */}
+
       <section className="featured-section" id="property-results">
         <div className="section-shell">
+
           <div className="featured-heading">
             <div>
-              <span className="section-eyebrow">THE PROPERTY COLLECTION</span>
+              <span className="section-eyebrow">
+                THE PROPERTY COLLECTION
+              </span>
+
               <h2>
                 Spaces worth <em>discovering.</em>
               </h2>
@@ -537,33 +720,43 @@ export default function CinematicPage() {
             <span>
               {filteredProperties.length} properties to explore
             </span>
-            <button
-              onClick={() => {
-                setPurpose("All");
-                setCategory("All");
-                setSearch("");
-              }}
-            >
+
+            <button onClick={clearFilters}>
               CLEAR FILTERS <RotateCcw size={13} />
             </button>
           </div>
 
           {filteredProperties.length > 0 ? (
             <div className="property-grid">
+
               {filteredProperties.map((property) => (
                 <article className="property-card" key={property.id}>
+
                   <div
                     className="property-image"
-                    style={{ backgroundImage: `url("${property.image}")` }}
+                    style={{
+                      backgroundImage: `url("${property.image}")`,
+                    }}
                   >
-                    <span className="property-tag">{property.tag}</span>
-                    <span className="demo-stamp">DEMO</span>
+                    <span className="property-tag">
+                      {property.tag}
+                    </span>
+
+                    <span className="demo-stamp">
+                      DEMO
+                    </span>
                   </div>
 
                   <div className="property-card-content">
+
                     <div className="property-card-top">
                       <span>{property.category}</span>
-                      <span>{property.purpose === "Buy" ? "FOR SALE" : "FOR RENT"}</span>
+
+                      <span>
+                        {property.purpose === "Buy"
+                          ? "FOR SALE"
+                          : "FOR RENT"}
+                      </span>
                     </div>
 
                     <h3>{property.title}</h3>
@@ -574,50 +767,69 @@ export default function CinematicPage() {
                     </p>
 
                     <div className="property-features">
-                      <span><BedDouble size={15} /> {property.bedrooms} beds</span>
-                      <span><Bath size={15} /> {property.bathrooms} baths</span>
-                      <span><Maximize2 size={14} /> {property.area} m²</span>
+                      <span>
+                        <BedDouble size={15} />
+                        {property.bedrooms} beds
+                      </span>
+
+                      <span>
+                        <Bath size={15} />
+                        {property.bathrooms} baths
+                      </span>
+
+                      <span>
+                        <Maximize2 size={14} />
+                        {property.area} m²
+                      </span>
                     </div>
 
                     <div className="property-card-footer">
                       <span>PRICE ON REQUEST</span>
+
                       <span className="property-arrow">
                         <ArrowUpRight size={17} />
                       </span>
                     </div>
+
                   </div>
                 </article>
               ))}
+
             </div>
           ) : (
             <div className="empty-properties">
               <Search size={25} />
+
               <h3>No matching properties</h3>
-              <p>Try changing your search or clearing the filters.</p>
-              <button
-                onClick={() => {
-                  setPurpose("All");
-                  setCategory("All");
-                  setSearch("");
-                }}
-              >
+
+              <p>
+                Try changing your search or clearing the filters.
+              </p>
+
+              <button onClick={clearFilters}>
                 SHOW ALL PROPERTIES
               </button>
             </div>
           )}
+
         </div>
       </section>
 
       {/* PROPERTY CATEGORIES */}
+
       <section className="categories-section">
         <div className="section-shell">
+
           <div className="section-kicker">
             <span>02 / EXPLORE BY TYPE</span>
             <span>FIND YOUR KIND OF SPACE</span>
           </div>
 
           <div className="categories-heading">
-            <span className="section-eyebrow">ROOM FOR EVERY STORY</span>
+            <span className="section-eyebrow">
+              ROOM FOR EVERY STORY
+            </span>
+
             <h2>
               What does <em>home</em> look like?
             </h2>
@@ -629,32 +841,45 @@ export default function CinematicPage() {
                 className="category-card"
                 key={item.name}
                 onClick={() => chooseCategory(item.name)}
-                style={{ backgroundImage: `url("${item.image}")` }}
+                style={{
+                  backgroundImage: `url("${item.image}")`,
+                }}
               >
-                <span className="category-number">{item.count}</span>
+                <span className="category-number">
+                  {item.count}
+                </span>
+
                 <span className="category-card-bottom">
                   <span>
                     <strong>{item.name}</strong>
                     <small>{item.description}</small>
                   </span>
+
                   <ArrowUpRight size={20} />
                 </span>
               </button>
             ))}
           </div>
+
         </div>
       </section>
 
       {/* LOCATIONS */}
+
       <section className="locations-section" id="locations">
         <div className="section-shell">
+
           <div className="locations-heading">
             <div>
-              <span className="section-eyebrow">03 / EXPLORE THE CITY</span>
+              <span className="section-eyebrow">
+                03 / EXPLORE THE CITY
+              </span>
+
               <h2>
                 Find your place in <em>Addis.</em>
               </h2>
             </div>
+
             <p>
               Every neighborhood has its own rhythm.
               Discover the character of the city, one place at a time.
@@ -664,29 +889,39 @@ export default function CinematicPage() {
           <div className="locations-grid">
             {neighborhoods.map((place, index) => (
               <div className="location-card" key={place.name}>
+
                 <div
                   className="location-image"
-                  style={{ backgroundImage: `url("${place.image}")` }}
+                  style={{
+                    backgroundImage: `url("${place.image}")`,
+                  }}
                 />
+
                 <div className="location-card-caption">
                   <span>0{index + 1}</span>
+
                   <div>
                     <h3>{place.name}</h3>
                     <p>{place.description}</p>
                   </div>
+
                   <ArrowUpRight size={18} />
                 </div>
+
               </div>
             ))}
           </div>
+
           <p className="location-note">
             Neighborhoods shown for discovery. Property availability
             will be added as verified listings become available.
           </p>
+
         </div>
       </section>
 
       {/* BRAND STORY */}
+
       <section className="story-section" id="about">
         <div className="story-image">
           <div className="story-image-overlay" />
@@ -694,19 +929,25 @@ export default function CinematicPage() {
         </div>
 
         <div className="story-content">
-          <span className="section-eyebrow">04 / OUR PHILOSOPHY</span>
+          <span className="section-eyebrow">
+            04 / OUR PHILOSOPHY
+          </span>
+
           <h2>
             Real estate is more than <em>real estate.</em>
           </h2>
+
           <p>
             It's where ordinary days become memories.
             It's the quiet morning light, the room that brings everyone
             together, and the feeling of finally being home.
           </p>
+
           <p>
             Estate in Motion brings properties to life through thoughtful
             discovery and immersive experiences.
           </p>
+
           <a href="#how-it-works" className="story-link">
             DISCOVER OUR APPROACH <ArrowUpRight size={16} />
           </a>
@@ -714,15 +955,20 @@ export default function CinematicPage() {
       </section>
 
       {/* HOW IT WORKS */}
+
       <section className="how-section" id="how-it-works">
         <div className="section-shell">
+
           <div className="section-kicker">
             <span>05 / THE EXPERIENCE</span>
             <span>FROM DISCOVERY TO DOORWAY</span>
           </div>
 
           <div className="how-heading">
-            <span className="section-eyebrow">A MORE THOUGHTFUL JOURNEY</span>
+            <span className="section-eyebrow">
+              A MORE THOUGHTFUL JOURNEY
+            </span>
+
             <h2>
               Your next chapter, <em>in motion.</em>
             </h2>
@@ -732,38 +978,55 @@ export default function CinematicPage() {
             <article>
               <span>01</span>
               <h3>Discover</h3>
-              <p>Explore properties and find spaces that speak to you.</p>
+              <p>
+                Explore properties and find spaces that speak to you.
+              </p>
             </article>
+
             <article>
               <span>02</span>
               <h3>Experience</h3>
-              <p>See the spaces through immersive photos and cinematic tours.</p>
+              <p>
+                See the spaces through immersive photos and cinematic tours.
+              </p>
             </article>
+
             <article>
               <span>03</span>
               <h3>Connect</h3>
-              <p>Ask questions and arrange a viewing for a property.</p>
+              <p>
+                Ask questions and arrange a viewing for a property.
+              </p>
             </article>
+
             <article>
               <span>04</span>
               <h3>Find home</h3>
-              <p>Take the next step toward a place that feels like yours.</p>
+              <p>
+                Take the next step toward a place that feels like yours.
+              </p>
             </article>
           </div>
+
         </div>
       </section>
 
       {/* FINAL CTA */}
+
       <section className="final-cta" id="contact">
         <div className="final-cta-image" />
+
         <div className="final-cta-content">
           <span>YOUR NEXT CHAPTER STARTS HERE</span>
+
           <h2>
             Somewhere is <em>waiting.</em>
           </h2>
+
           <p>
             Explore the possibilities. Find a space that feels like home.
           </p>
+
           <a href="#properties">
             EXPLORE PROPERTIES <ArrowUpRight size={16} />
           </a>
@@ -771,12 +1034,15 @@ export default function CinematicPage() {
       </section>
 
       {/* FOOTER */}
+
       <footer className="estate-footer">
         <div className="footer-main">
+
           <div className="footer-brand">
             <Link href="/" className="cinematic-logo">
               ESTATE<span>IN MOTION</span>
             </Link>
+
             <p>
               A new way to discover, experience, and find your somewhere.
             </p>
@@ -801,19 +1067,29 @@ export default function CinematicPage() {
             <a href="#contact">Contact</a>
             <a href="#contact">Request a viewing</a>
           </div>
+
         </div>
 
         <div className="footer-bottom">
           <span>© 2026 ESTATE IN MOTION</span>
           <span>MADE TO BE EXPERIENCED.</span>
-          <a href="#top" onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}>
+
+          <a
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault();
+
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            }}
+          >
             BACK TO TOP ↑
           </a>
         </div>
       </footer>
+
     </main>
   );
 }
