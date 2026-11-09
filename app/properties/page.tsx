@@ -63,6 +63,7 @@ useEffect(() => {
 const [activeLocation, setActiveLocation] = useState("All locations");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("featured");
+  const [sortOpen, setSortOpen] = useState(false);
   const [selectedProperty, setSelectedProperty] =
     useState<Property | null>(null);
 
@@ -200,20 +201,51 @@ return matchesCategory && matchesLocation && matchesSearch;
             )}
           </div>
 
-          <label className="property-sort">
-            <SlidersHorizontal size={16} />
-            <span>Sort by</span>
-           <select
-  value={sort}
-  onChange={(event) => setSort(event.target.value)}
-  aria-label="Sort properties"
-  className="properties-sort-select"
->
-  <option value="featured">Featured</option>
-  <option value="price-low">Price: Low to high</option>
-  <option value="price-high">Price: High to low</option>
-</select>
-          </label>
+         <div className="property-sort">
+  <span>Sort by:</span>
+
+  <div className="custom-sort">
+    <button
+      type="button"
+      className="custom-sort-trigger"
+      onClick={() => setSortOpen(!sortOpen)}
+    >
+      {sort === "featured"
+        ? "Featured"
+        : sort === "price-low"
+        ? "Price: Low to high"
+        : "Price: High to low"}
+
+      <span className={`sort-arrow ${sortOpen ? "open" : ""}`}>
+        ↓
+      </span>
+    </button>
+
+    {sortOpen && (
+      <div className="custom-sort-menu">
+        {[
+          { value: "featured", label: "Featured" },
+          { value: "price-low", label: "Price: Low to high" },
+          { value: "price-high", label: "Price: High to low" },
+        ].map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            className={`custom-sort-option ${
+              sort === option.value ? "selected" : ""
+            }`}
+            onClick={() => {
+              setSort(option.value);
+              setSortOpen(false);
+            }}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
         </div>
 <div className="property-filter-row">
   <label className="category-dropdown">
