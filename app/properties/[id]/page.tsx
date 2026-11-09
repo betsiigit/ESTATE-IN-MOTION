@@ -12,6 +12,7 @@ import {
 
 import { properties } from "../../data/properties";
 import "./property-detail.css";
+import PropertyGallery from "./PropertyGallery";
 
 export const instant = false;
 
@@ -43,38 +44,36 @@ export default async function PropertyDetailPage({ params }: PageProps) {
         </Link>
       </header>
 
-      <section className="property-detail-hero">
-        <div
-          className="property-detail-image"
-          style={{ backgroundImage: `url("${property.image}")` }}
-        >
-          <span className="property-detail-image-label">
-            PROPERTY NO. {String(property.id).padStart(2, "0")}
-          </span>
-        </div>
+     <section className="property-detail-hero">
+  <PropertyGallery
+    images={property.galleryImages?.length
+      ? property.galleryImages
+      : [property.image]}
+    propertyName={property.name}
+  />
 
-        <div className="property-detail-heading">
-          <div>
-            <span className="property-detail-eyebrow">
-              {property.category} / {property.type}
-            </span>
+  <div className="property-detail-heading">
+    <div>
+      <span className="property-detail-eyebrow">
+        {property.category} / {property.type}
+      </span>
 
-            <h1>{property.name}</h1>
+      <h1>{property.name}</h1>
 
-            <p className="property-detail-location">
-              <MapPin size={16} />
-              {property.location}
-            </p>
-          </div>
+      <p className="property-detail-location">
+        <MapPin size={16} />
+        {property.location}
+      </p>
+    </div>
 
-          <div className="property-detail-price">
-            <span>PRICE ON REQUEST</span>
-            <strong>
-              ETB {property.price.toLocaleString("en-US")}
-            </strong>
-          </div>
-        </div>
-      </section>
+    <div className="property-detail-price">
+      <span>PRICE ON REQUEST</span>
+      <strong>
+        ETB {property.price.toLocaleString("en-US")}
+      </strong>
+    </div>
+  </div>
+</section>
 
       <section className="property-detail-content">
         <div className="property-detail-description">

@@ -199,29 +199,32 @@ export default function PropertiesPage() {
           <div className="properties-list-grid">
             {filteredProperties.map((property, index) => (
               <article className="listing-card" key={property.id}>
-                <button
-                  className="listing-image"
-                  onClick={() => setSelectedProperty(property)}
-                  aria-label={`View ${property.name}`}
-                >
-                  <Image
-                    src={property.image}
-                    alt={property.name}
-                    fill
-                    unoptimized
-                    sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                  <span className="listing-index">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  {property.featured && (
-                    <span className="listing-featured">SELECTED SPACE</span>
-                  )}
-                  <span className="listing-open">
-                    <ArrowUpRight size={20} />
-                  </span>
-                </button>
+               <Link
+  href={`/properties/${property.id}`}
+  className="listing-image"
+  aria-label={`View ${property.name}`}
+>
+  <Image
+    src={property.image}
+    alt={property.name}
+    fill
+    unoptimized
+    sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+    style={{ objectFit: "cover" }}
+  />
+
+  <span className="listing-index">
+    {String(index + 1).padStart(2, "0")}
+  </span>
+
+  {property.featured && (
+    <span className="listing-featured">SELECTED SPACE</span>
+  )}
+
+  <span className="listing-open">
+    <ArrowUpRight size={20} />
+  </span>
+</Link>
 
                 <div className="listing-details">
                   <div className="listing-title-row">
@@ -241,13 +244,12 @@ export default function PropertiesPage() {
                     <span><Maximize2 size={14} /> {property.area} m²</span>
                   </div>
 
-                  <button
-                    className="listing-view-link"
-                    onClick={() => setSelectedProperty(property)}
-                  >
-                    Explore property <ArrowUpRight size={16} />
-                  </button>
-                </div>
+  <Link
+  href={`/properties/${property.id}`}
+  className="listing-view-link"
+>
+  Explore property <ArrowUpRight size={16} />
+</Link>   </div>
               </article>
             ))}
           </div>
@@ -292,67 +294,7 @@ export default function PropertiesPage() {
         <Link href="/">BACK TO HOME <ArrowLeft size={14} /></Link>
       </footer>
 
-      {selectedProperty && (
-        <div
-          className="property-modal-backdrop"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
-              setSelectedProperty(null);
-            }
-          }}
-        >
-          <section
-            className="property-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="property-modal-title"
-          >
-            <button
-              className="property-modal-close"
-              onClick={() => setSelectedProperty(null)}
-              aria-label="Close property details"
-            >
-              <X size={21} />
-            </button>
-
-            <div className="property-modal-image">
-              <Image
-                src={selectedProperty.image}
-                alt={selectedProperty.name}
-                fill
-                unoptimized
-                sizes="(max-width: 800px) 100vw, 50vw"
-                style={{ objectFit: "cover" }}
-              />
-            </div>
-
-            <div className="property-modal-content">
-              <span className="properties-eyebrow">
-                {selectedProperty.type} / {selectedProperty.location}
-              </span>
-              <h2 id="property-modal-title">{selectedProperty.name}</h2>
-              <strong>{formatPrice(selectedProperty.price)}</strong>
-              <p>{selectedProperty.description}</p>
-
-              <div className="property-modal-specs">
-                <span><BedDouble size={16} /> {selectedProperty.bedrooms} Bedrooms</span>
-                <span><Bath size={16} /> {selectedProperty.bathrooms} Bathrooms</span>
-                <span><Maximize2 size={15} /> {selectedProperty.area} m²</span>
-              </div>
-
-              <Link href="/contact" className="property-modal-contact">
-                Enquire about this property <ArrowUpRight size={17} />
-              </Link>
-              <button
-                className="property-modal-back"
-                onClick={() => setSelectedProperty(null)}
-              >
-                <ArrowLeft size={15} /> Back to collection
-              </button>
-            </div>
-          </section>
-        </div>
-      )}
+      
     </main>
   );
 }
