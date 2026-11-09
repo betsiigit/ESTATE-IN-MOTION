@@ -914,18 +914,11 @@
 
 }
 
-
-
 .search-controls {
-
   display: grid;
-
-  grid-template-columns: 1.5fr 1fr auto;
-
+  grid-template-columns: 1fr 1.5fr auto;
   align-items: stretch;
-
   border: 1px solid #dedbd2;
-
 }
 
 

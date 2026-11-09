@@ -214,26 +214,29 @@ return matchesCategory && matchesLocation && matchesSearch;
             </select>
           </label>
         </div>
+<div className="property-filter-row">
+  <label className="category-dropdown">
+    <span>PROPERTY TYPE</span>
 
-        <div className="property-filter-row">
-          <div className="property-filters">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`property-filter ${
-                  activeCategory === category ? "active" : ""
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+    <select
+      value={activeCategory}
+      onChange={(event) => setActiveCategory(event.target.value)}
+      aria-label="Filter by property type"
+    >
+      {categories.map((category) => (
+        <option key={category} value={category}>
+          {category}
+        </option>
+      ))}
+    </select>
 
-          <span className="property-result-count">
-            {filteredProperties.length.toString().padStart(2, "0")} SPACES
-          </span>
-        </div>
+    <ArrowDown size={16} />
+  </label>
+
+  <span className="property-result-count">
+    {filteredProperties.length.toString().padStart(2, "0")} SPACES
+  </span>
+</div>
 
         {filteredProperties.length > 0 ? (
           <div className="properties-list-grid">

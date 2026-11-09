@@ -568,22 +568,34 @@ useEffect(() => {
                 </span>
               </label>
 
-              <label className="search-field category-field">
-                <span>
-                  <small>PROPERTY TYPE</small>
+             <div className="property-filter-row">
+ <div className="category-grid">
+  {categories.map((item) => (
+    <Link
+      href={`/properties?category=${encodeURIComponent(item.name)}`}
+      className="category-card"
+      key={item.name}
+      style={{
+        backgroundImage: `url("${item.image}")`,
+      }}
+    >
+      <span className="category-number">{item.count}</span>
 
-                  <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                  >
-                    <option value="All">All property types</option>
-                    <option value="Apartment">Apartment</option>
-                    <option value="Villa">Villa</option>
-                    <option value="House">House</option>
-                    <option value="Penthouse">Penthouse</option>
-                  </select>
-                </span>
-              </label>
+      <span className="category-card-bottom">
+        <span>
+          <strong>{item.name}</strong>
+          <small>{item.description}</small>
+        </span>
+
+        <ArrowUpRight size={20} />
+      </span>
+    </Link>
+  ))}
+</div>
+  <span className="property-result-count">
+    {filteredProperties.length.toString().padStart(2, "0")} SPACES
+  </span>
+</div>
 
               <button
                 className="search-submit"
@@ -980,7 +992,7 @@ useEffect(() => {
 
         <div className="footer-bottom">
           <span>© 2026 ESTATE IN MOTION</span>
-          <span>MADE TO BE EXPERIENCED.</span>
+          <span>MADE BY BETSELOT T.</span>
 
           <a
             href="#top"
