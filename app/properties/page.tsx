@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import "./properties.css";
@@ -25,8 +26,24 @@ function formatPrice(price: number) {
   return `ETB ${price.toLocaleString("en-US")}`;
 }
 
-export default function PropertiesPage() {
+function PropertiesContent() {
+    const searchParams = useSearchParams();
+
+const categoryFromUrl = searchParams.get("category");
+
+const categoryMap: Record<string, string> = {
+  Apartments: "Apartment",
+  Villas: "Villa",
+  Houses: "House",
+  Penthouses: "All spaces",
+};
   const [activeCategory, setActiveCategory] = useState("All spaces");
+
+useEffect(() => {
+  if (categoryFromUrl) {
+    setActiveCategory(categoryMap[categoryFromUrl] || "All spaces");
+  }
+}, [categoryFromUrl]);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("featured");
   const [selectedProperty, setSelectedProperty] =
@@ -34,9 +51,9 @@ export default function PropertiesPage() {
 
   const filteredProperties = useMemo(() => {
     let result = properties.filter((property) => {
-      const matchesCategory =
-        activeCategory === "All spaces" ||
-        property.category === activeCategory;
+const matchesCategory =
+  activeCategory === "All spaces" ||
+  property.category === activeCategory;
 
       const searchText = search.trim().toLowerCase();
       const matchesSearch =
@@ -296,5 +313,13 @@ export default function PropertiesPage() {
 
       
     </main>
+  );
+}
+
+export default function PropertiesPage() {
+  return (
+    <Suspense fallback={<div>Loading properties...</div>}>
+      <PropertiesContent />
+    </Suspense>
   );
 }

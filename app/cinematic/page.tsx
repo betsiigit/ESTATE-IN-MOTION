@@ -742,29 +742,29 @@ useEffect(() => {
           </div>
 
           <div className="category-grid">
-            {categories.map((item) => (
-              <button
-                className="category-card"
-                key={item.name}
-                onClick={() => chooseCategory(item.name)}
-                style={{
-                  backgroundImage: `url("${item.image}")`,
-                }}
-              >
-                <span className="category-number">
-                  {item.count}
-                </span>
+          {categories.map((item) => (
+  <Link
+    href={`/properties?category=${encodeURIComponent(item.name)}`}
+    className="category-card"
+    key={item.name}
+    style={{
+      backgroundImage: `url("${item.image}")`,
+    }}
+  >
+    <span className="category-number">
+      {item.count}
+    </span>
 
-                <span className="category-card-bottom">
-                  <span>
-                    <strong>{item.name}</strong>
-                    <small>{item.description}</small>
-                  </span>
+    <span className="category-card-bottom">
+      <span>
+        <strong>{item.name}</strong>
+        <small>{item.description}</small>
+      </span>
 
-                  <ArrowUpRight size={20} />
-                </span>
-              </button>
-            ))}
+      <ArrowUpRight size={20} />
+    </span>
+  </Link>
+))}
           </div>
 
         </div>
