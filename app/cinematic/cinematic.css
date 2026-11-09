@@ -2480,3 +2480,72 @@
 .scene-shade {
   z-index: 1;
 }
+.cinematic-nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.cinematic-nav-center a {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.cinematic-nav-center a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.cinematic-nav-center a:hover::after {
+  width: 100%;
+}
+
+.cinematic-nav-center a:hover {
+  opacity: 0.65;
+}
+
+.cinematic-nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border: 1px solid currentColor;
+  color: inherit;
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.4px;
+  white-space: nowrap;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.cinematic-nav-link:hover {
+  background: currentColor;
+  color: var(--cinematic-bg, #e9e7df);
+}
+
+a.property-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a.property-card:focus-visible {
+  outline: 2px solid var(--cinematic-accent, #b7a17c);
+  outline-offset: 5px;
+}

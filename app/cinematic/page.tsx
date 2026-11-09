@@ -732,71 +732,75 @@ useEffect(() => {
           {filteredProperties.length > 0 ? (
             <div className="property-grid">
 
-              {filteredProperties.map((property) => (
-                <article className="property-card" key={property.id}>
+            {filteredProperties.map((property) => (
+  <Link
+    href="/rooms"
+    className="property-card"
+    key={property.id}
+    aria-label={`Explore ${property.title}`}
+  >
+    <div
+      className="property-image"
+      style={{
+        backgroundImage: `url("${property.image}")`,
+      }}
+    >
+      <span className="property-tag">
+        {property.tag}
+      </span>
 
-                  <div
-                    className="property-image"
-                    style={{
-                      backgroundImage: `url("${property.image}")`,
-                    }}
-                  >
-                    <span className="property-tag">
-                      {property.tag}
-                    </span>
+      <span className="demo-stamp">
+        DEMO
+      </span>
+    </div>
 
-                    <span className="demo-stamp">
-                      DEMO
-                    </span>
-                  </div>
+    <div className="property-card-content">
 
-                  <div className="property-card-content">
+      <div className="property-card-top">
+        <span>{property.category}</span>
 
-                    <div className="property-card-top">
-                      <span>{property.category}</span>
+        <span>
+          {property.purpose === "Buy"
+            ? "FOR SALE"
+            : "FOR RENT"}
+        </span>
+      </div>
 
-                      <span>
-                        {property.purpose === "Buy"
-                          ? "FOR SALE"
-                          : "FOR RENT"}
-                      </span>
-                    </div>
+      <h3>{property.title}</h3>
 
-                    <h3>{property.title}</h3>
+      <p className="property-location">
+        <MapPin size={14} />
+        {property.location}
+      </p>
 
-                    <p className="property-location">
-                      <MapPin size={14} />
-                      {property.location}
-                    </p>
+      <div className="property-features">
+        <span>
+          <BedDouble size={15} />
+          {property.bedrooms} beds
+        </span>
 
-                    <div className="property-features">
-                      <span>
-                        <BedDouble size={15} />
-                        {property.bedrooms} beds
-                      </span>
+        <span>
+          <Bath size={15} />
+          {property.bathrooms} baths
+        </span>
 
-                      <span>
-                        <Bath size={15} />
-                        {property.bathrooms} baths
-                      </span>
+        <span>
+          <Maximize2 size={14} />
+          {property.area} m²
+        </span>
+      </div>
 
-                      <span>
-                        <Maximize2 size={14} />
-                        {property.area} m²
-                      </span>
-                    </div>
+      <div className="property-card-footer">
+        <span>PRICE ON REQUEST</span>
 
-                    <div className="property-card-footer">
-                      <span>PRICE ON REQUEST</span>
+        <span className="property-arrow">
+          <ArrowUpRight size={17} />
+        </span>
+      </div>
 
-                      <span className="property-arrow">
-                        <ArrowUpRight size={17} />
-                      </span>
-                    </div>
-
-                  </div>
-                </article>
-              ))}
+    </div>
+  </Link>
+))}
 
             </div>
           ) : (
