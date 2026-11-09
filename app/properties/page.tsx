@@ -203,15 +203,16 @@ return matchesCategory && matchesLocation && matchesSearch;
           <label className="property-sort">
             <SlidersHorizontal size={16} />
             <span>Sort by</span>
-            <select
-              value={sort}
-              onChange={(event) => setSort(event.target.value)}
-              aria-label="Sort properties"
-            >
-              <option value="featured">Featured</option>
-              <option value="price-low">Price: Low to high</option>
-              <option value="price-high">Price: High to low</option>
-            </select>
+           <select
+  value={sort}
+  onChange={(event) => setSort(event.target.value)}
+  aria-label="Sort properties"
+  className="properties-sort-select"
+>
+  <option value="featured">Featured</option>
+  <option value="price-low">Price: Low to high</option>
+  <option value="price-high">Price: High to low</option>
+</select>
           </label>
         </div>
 <div className="property-filter-row">

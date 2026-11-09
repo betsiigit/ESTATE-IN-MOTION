@@ -231,12 +231,31 @@
 }
 
 .property-sort select {
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--p-ink);
-  font: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+
+  min-width: 190px;
+  padding: 13px 42px 13px 16px;
+
+  border: 1px solid #b7a17c;
+  border-radius: 0;
+  outline: none;
+
+  background-color: #22251f;
+  color: #e9e5dc;
+
+  font-family: inherit;
+  font-size: 12px;
   cursor: pointer;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23b7a17c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+}
+
+.property-sort select option {
+  background: #22251f;
+  color: #e9e5dc;
 }
 
 .property-filter-row {
@@ -846,4 +865,33 @@
     align-items: flex-start;
     gap: 18px;
   }
+}
+
+.properties-sort-select {
+  appearance: none;
+  min-width: 175px;
+  padding: 12px 38px 12px 15px;
+  border: 1px solid rgba(32, 35, 31, 0.18);
+  border-radius: 0;
+  outline: none;
+  background-color: #f0eee8;
+  color: #20231f;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23b7a17c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 13px center;
+}
+
+.properties-sort-select:hover,
+.properties-sort-select:focus {
+  border-color: #b7a17c;
+}
+
+.properties-sort-select option {
+  background: #f0eee8;
+  color: #20231f;
 }
