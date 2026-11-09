@@ -501,13 +501,16 @@ useEffect(() => {
           ESTATE<span>IN MOTION</span>
         </Link>
 
-        <div className="cinematic-nav-center">
-          A NEW WAY TO EXPERIENCE HOME
-        </div>
+       <div className="cinematic-nav-center">
+  <Link href="/properties">PROPERTIES</Link>
+  <Link href="/rooms">SPACES</Link>
+  <Link href="/architecture">ARCHITECTURE</Link>
+  <Link href="/contact">CONTACT</Link>
+</div>
 
-        <Link href="#properties" className="cinematic-nav-link">
-          EXPLORE HOMES <ArrowUpRight size={14} />
-        </Link>
+<Link href="/properties" className="cinematic-nav-link">
+  EXPLORE HOMES <ArrowUpRight size={14} />
+</Link>
       </nav>
 
       {/* CINEMATIC INTRO */}
@@ -1027,9 +1030,9 @@ useEffect(() => {
             Explore the possibilities. Find a space that feels like home.
           </p>
 
-          <a href="#properties">
-            EXPLORE PROPERTIES <ArrowUpRight size={16} />
-          </a>
+         <Link href="/properties">
+  EXPLORE PROPERTIES <ArrowUpRight size={16} />
+</Link>
         </div>
       </section>
 
