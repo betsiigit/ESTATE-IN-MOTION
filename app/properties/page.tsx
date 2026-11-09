@@ -22,6 +22,8 @@ import {
 
 const categories = ["All spaces", "Villa", "House", "Apartment"];
 
+
+
 function formatPrice(price: number) {
   return `ETB ${price.toLocaleString("en-US")}`;
 }
@@ -31,12 +33,17 @@ function PropertiesContent() {
 
 const categoryFromUrl = searchParams.get("category");
 
+const locationFromUrl = searchParams.get("location");
+
 const categoryMap: Record<string, string> = {
   Apartments: "Apartment",
   Villas: "Villa",
   Houses: "House",
   Penthouses: "All spaces",
 };
+
+
+
   const [activeCategory, setActiveCategory] = useState("All spaces");
 
 useEffect(() => {
@@ -44,6 +51,16 @@ useEffect(() => {
     setActiveCategory(categoryMap[categoryFromUrl] || "All spaces");
   }
 }, [categoryFromUrl]);
+
+
+useEffect(() => {
+  if (locationFromUrl) {
+    setActiveLocation(locationFromUrl);
+  }
+}, [locationFromUrl]);
+
+
+const [activeLocation, setActiveLocation] = useState("All locations");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("featured");
   const [selectedProperty, setSelectedProperty] =
@@ -55,6 +72,12 @@ const matchesCategory =
   activeCategory === "All spaces" ||
   property.category === activeCategory;
 
+const matchesLocation =
+  activeLocation === "All locations" ||
+  property.location
+    .toLowerCase()
+    .includes(activeLocation.toLowerCase());
+
       const searchText = search.trim().toLowerCase();
       const matchesSearch =
         !searchText ||
@@ -62,7 +85,7 @@ const matchesCategory =
         property.location.toLowerCase().includes(searchText) ||
         property.type.toLowerCase().includes(searchText);
 
-      return matchesCategory && matchesSearch;
+return matchesCategory && matchesLocation && matchesSearch;
     });
 
     if (sort === "price-low") {
@@ -76,7 +99,7 @@ const matchesCategory =
     }
 
     return result;
-  }, [activeCategory, search, sort]);
+}, [activeCategory, activeLocation, search, sort]);
 
   return (
     <main className="properties-page">
@@ -279,6 +302,7 @@ const matchesCategory =
               onClick={() => {
                 setSearch("");
                 setActiveCategory("All spaces");
+                setActiveLocation("All locations");
               }}
             >
               Clear filters <ArrowRight size={15} />

@@ -793,29 +793,31 @@ useEffect(() => {
           </div>
 
           <div className="locations-grid">
-            {neighborhoods.map((place, index) => (
-              <div className="location-card" key={place.name}>
+           {neighborhoods.map((place, index) => (
+  <Link
+    href={`/properties?location=${encodeURIComponent(place.name)}`}
+    className="location-card"
+    key={place.name}
+  >
+    <div
+      className="location-image"
+      style={{
+        backgroundImage: `url("${place.image}")`,
+      }}
+    />
 
-                <div
-                  className="location-image"
-                  style={{
-                    backgroundImage: `url("${place.image}")`,
-                  }}
-                />
+    <div className="location-card-caption">
+      <span>0{index + 1}</span>
 
-                <div className="location-card-caption">
-                  <span>0{index + 1}</span>
+      <div>
+        <h3>{place.name}</h3>
+        <p>{place.description}</p>
+      </div>
 
-                  <div>
-                    <h3>{place.name}</h3>
-                    <p>{place.description}</p>
-                  </div>
-
-                  <ArrowUpRight size={18} />
-                </div>
-
-              </div>
-            ))}
+      <ArrowUpRight size={18} />
+    </div>
+  </Link>
+))}
           </div>
 
           <p className="location-note">
