@@ -660,11 +660,10 @@ useEffect(() => {
 
     <div className="property-card-content">
 
-      <div className="property-card-top">
-        <span>{property.category}</span>
-
-       {property.type.toUpperCase()}
-      </div>
+     <div className="property-card-top">
+  <span>{property.category}</span>
+  <span>{property.type.toUpperCase()}</span>
+</div>
 
       <h3>{property.name}</h3>
 

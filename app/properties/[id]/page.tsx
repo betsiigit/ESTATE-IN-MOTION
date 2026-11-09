@@ -13,6 +13,8 @@ import {
 import { properties } from "../../data/properties";
 import "./property-detail.css";
 
+export const instant = false;
+
 type PageProps = {
   params: Promise<{ id: string }>;
 };
