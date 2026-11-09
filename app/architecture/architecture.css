@@ -1,0 +1,555 @@
+.architecture-page {
+  --architecture-bg: #e9e7df;
+  --architecture-dark: #22251f;
+  --architecture-muted: #777970;
+  --architecture-accent: #b7a17c;
+
+  background: var(--architecture-bg);
+  color: var(--architecture-dark);
+  width: 100%;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.architecture-page a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.architecture-nav {
+  height: 82px;
+  padding: 0 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  border-bottom: 1px solid rgba(34, 37, 31, 0.12);
+}
+
+.architecture-logo {
+  font-family: Georgia, serif;
+  font-size: 17px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.architecture-logo span {
+  display: block;
+  margin-top: 3px;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+}
+
+.architecture-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.architecture-nav-links a,
+.architecture-nav-cta {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+}
+
+.architecture-nav-links a {
+  position: relative;
+  color: var(--architecture-muted);
+}
+
+.architecture-nav-links a:hover,
+.architecture-nav-links a.active {
+  color: var(--architecture-dark);
+}
+
+.architecture-nav-links a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--architecture-accent);
+}
+
+.architecture-nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(34, 37, 31, 0.4);
+  padding: 13px 17px;
+}
+
+.architecture-nav-cta:hover {
+  background: var(--architecture-dark);
+  color: var(--architecture-bg);
+}
+
+.architecture-hero {
+  min-height: 690px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 90px 10%;
+  color: #f4f1e9;
+  background: #353831;
+}
+
+.architecture-hero-image {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(24, 27, 23, 0.82) 0%,
+      rgba(24, 27, 23, 0.48) 48%,
+      rgba(24, 27, 23, 0.12) 100%
+    ),
+    url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2200&q=90");
+  background-position: center;
+  background-size: cover;
+  transform: scale(1.01);
+}
+
+.architecture-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 650px;
+}
+
+.architecture-eyebrow {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  line-height: 1.5;
+  color: var(--architecture-accent);
+}
+
+.architecture-hero h1,
+.architecture-intro h2,
+.architecture-section-heading h2,
+.architecture-materials h2,
+.architecture-closing h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -3px;
+}
+
+.architecture-hero h1 {
+  margin: 32px 0 25px;
+  font-size: clamp(65px, 9vw, 120px);
+  line-height: 0.94;
+}
+
+.architecture-hero h1 em,
+.architecture-intro h2 em,
+.architecture-section-heading h2 em,
+.architecture-materials h2 em,
+.architecture-closing h2 em {
+  font-weight: 400;
+  color: var(--architecture-accent);
+}
+
+.architecture-hero-content > p {
+  max-width: 390px;
+  color: rgba(244, 241, 233, 0.78);
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.architecture-scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 45px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(244, 241, 233, 0.5);
+  font-size: 9px;
+  letter-spacing: 1.8px;
+}
+
+.architecture-hero-index {
+  position: absolute;
+  z-index: 1;
+  bottom: 35px;
+  right: 6%;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(244, 241, 233, 0.75);
+}
+
+.architecture-intro {
+  padding: 115px 10% 125px;
+}
+
+.architecture-intro-label {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 25px;
+  border-bottom: 1px solid rgba(34, 37, 31, 0.2);
+  color: var(--architecture-muted);
+  font-size: 9px;
+  letter-spacing: 1.8px;
+}
+
+.architecture-intro-content {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 10%;
+  align-items: center;
+  padding-top: 65px;
+}
+
+.architecture-intro h2 {
+  margin: 0;
+  font-size: clamp(55px, 7vw, 88px);
+  line-height: 1.02;
+}
+
+.architecture-intro h2 em,
+.architecture-section-heading h2 em,
+.architecture-closing h2 em {
+  color: var(--architecture-accent);
+}
+
+.architecture-intro-copy {
+  max-width: 420px;
+}
+
+.architecture-intro-copy p,
+.architecture-materials-content > p {
+  color: var(--architecture-muted);
+  font-size: 13px;
+  line-height: 2;
+  margin: 0 0 20px;
+}
+
+.architecture-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 22px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--architecture-dark);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+.architecture-text-link svg,
+.architecture-closing-link svg {
+  transition: transform 0.3s ease;
+}
+
+.architecture-text-link:hover svg,
+.architecture-closing-link:hover svg {
+  transform: translate(4px, -4px);
+}
+
+.architecture-features {
+  padding: 100px 8% 125px;
+  background: #dfddd4;
+}
+
+.architecture-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  margin-bottom: 55px;
+}
+
+.architecture-section-heading h2 {
+  margin: 20px 0 0;
+  font-size: clamp(55px, 6vw, 78px);
+  line-height: 1;
+}
+
+.architecture-section-heading > p {
+  max-width: 300px;
+  margin: 0 0 8px;
+  color: var(--architecture-muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.architecture-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.architecture-feature-card:nth-child(2) {
+  margin-top: 65px;
+}
+
+.architecture-feature-card:nth-child(3) {
+  margin-top: 30px;
+}
+
+.architecture-feature-image {
+  position: relative;
+  height: 390px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.architecture-feature-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 32, 28, 0.08);
+  transition: background 0.4s ease;
+}
+
+.architecture-feature-card:hover .architecture-feature-image::after {
+  background: rgba(30, 32, 28, 0.22);
+}
+
+.architecture-feature-image span {
+  position: absolute;
+  z-index: 1;
+  top: 18px;
+  left: 18px;
+  color: white;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.architecture-feature-info {
+  padding-top: 22px;
+}
+
+.architecture-feature-info h3 {
+  margin: 0 0 12px;
+  font-family: Georgia, serif;
+  font-size: 25px;
+  font-weight: 400;
+}
+
+.architecture-feature-info p {
+  max-width: 330px;
+  margin: 0;
+  color: var(--architecture-muted);
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+.architecture-materials {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 610px;
+  background: var(--architecture-dark);
+  color: #f2f0e8;
+}
+
+.architecture-materials-image {
+  min-height: 610px;
+  background-image: url("https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1400&q=90");
+  background-size: cover;
+  background-position: center;
+}
+
+.architecture-materials-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 80px 12%;
+}
+
+.architecture-materials h2 {
+  margin: 28px 0;
+  font-size: clamp(55px, 6vw, 82px);
+  line-height: 1;
+}
+
+.architecture-materials-content > p {
+  max-width: 380px;
+  color: rgba(242, 240, 232, 0.65);
+}
+
+.architecture-materials .architecture-text-link {
+  border-color: rgba(242, 240, 232, 0.6);
+}
+
+.architecture-closing {
+  padding: 120px 20px;
+  text-align: center;
+}
+
+.architecture-closing h2 {
+  margin: 28px 0 35px;
+  font-size: clamp(58px, 8vw, 100px);
+  line-height: 0.98;
+}
+
+.architecture-closing-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 22px;
+  border: 1px solid rgba(34, 37, 31, 0.5);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.architecture-closing-link:hover {
+  background: var(--architecture-dark);
+  color: var(--architecture-bg);
+}
+
+.architecture-footer {
+  min-height: 100px;
+  padding: 25px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  border-top: 1px solid rgba(34, 37, 31, 0.15);
+}
+
+.architecture-footer > span,
+.architecture-footer > a:last-child {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--architecture-muted);
+}
+
+.architecture-footer > a:last-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .architecture-nav {
+    padding: 0 4%;
+  }
+
+  .architecture-nav-links {
+    gap: 15px;
+  }
+
+  .architecture-nav-links a {
+    font-size: 8px;
+  }
+
+  .architecture-nav-cta {
+    padding: 11px;
+    font-size: 8px;
+  }
+
+  .architecture-feature-image {
+    height: 300px;
+  }
+}
+
+@media (max-width: 650px) {
+  .architecture-nav {
+    height: auto;
+    min-height: 75px;
+    flex-wrap: wrap;
+    padding: 18px 5%;
+    gap: 18px;
+  }
+
+  .architecture-nav-links {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 8px 0 3px;
+  }
+
+  .architecture-nav-links a {
+    font-size: 8px;
+  }
+
+  .architecture-nav-cta {
+    margin-left: auto;
+  }
+
+  .architecture-hero {
+    min-height: 620px;
+    padding: 70px 7%;
+  }
+
+  .architecture-hero h1 {
+    font-size: clamp(60px, 16vw, 90px);
+  }
+
+  .architecture-intro {
+    padding: 80px 7%;
+  }
+
+  .architecture-intro-label {
+    gap: 15px;
+    font-size: 8px;
+  }
+
+  .architecture-intro-content {
+    grid-template-columns: 1fr;
+    gap: 35px;
+    padding-top: 45px;
+  }
+
+  .architecture-intro h2 {
+    font-size: 64px;
+  }
+
+  .architecture-features {
+    padding: 80px 7%;
+  }
+
+  .architecture-section-heading {
+    display: block;
+  }
+
+  .architecture-section-heading > p {
+    margin-top: 25px;
+  }
+
+  .architecture-feature-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .architecture-feature-card:nth-child(2),
+  .architecture-feature-card:nth-child(3) {
+    margin-top: 0;
+  }
+
+  .architecture-feature-image {
+    height: 350px;
+  }
+
+  .architecture-materials {
+    grid-template-columns: 1fr;
+  }
+
+  .architecture-materials-image {
+    min-height: 360px;
+  }
+
+  .architecture-materials-content {
+    padding: 75px 8%;
+  }
+
+  .architecture-closing {
+    padding: 90px 7%;
+  }
+
+  .architecture-footer {
+    flex-wrap: wrap;
+  }
+
+  .architecture-footer > span {
+    order: 3;
+    width: 100%;
+  }
+}
