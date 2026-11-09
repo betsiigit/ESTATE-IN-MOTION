@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { properties } from "../data/properties";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -64,99 +65,6 @@ const scenes = [
 // PROPERTY DATA
 // --------------------------------------------------
 
-type Listing = {
-  id: number;
-  title: string;
-  location: string;
-  category: string;
-  purpose: "Buy" | "Rent";
-  bedrooms: number;
-  bathrooms: number;
-  area: number;
-  image: string;
-  tag: string;
-};
-
-const properties: Listing[] = [
-  {
-    id: 1,
-    title: "The Modern Residence",
-    location: "Bole, Addis Ababa",
-    category: "Villa",
-    purpose: "Buy",
-    bedrooms: 4,
-    bathrooms: 4,
-    area: 320,
-    image:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1000&q=85",
-    tag: "Featured",
-  },
-  {
-    id: 2,
-    title: "A Quiet City Apartment",
-    location: "Kazanchis, Addis Ababa",
-    category: "Apartment",
-    purpose: "Rent",
-    bedrooms: 2,
-    bathrooms: 2,
-    area: 145,
-    image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1000&q=85",
-    tag: "City living",
-  },
-  {
-    id: 3,
-    title: "The Garden House",
-    location: "Old Airport, Addis Ababa",
-    category: "House",
-    purpose: "Buy",
-    bedrooms: 5,
-    bathrooms: 4,
-    area: 410,
-    image:
-      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1000&q=85",
-    tag: "Architecture",
-  },
-  {
-    id: 4,
-    title: "Elevated Living",
-    location: "CMC, Addis Ababa",
-    category: "Apartment",
-    purpose: "Rent",
-    bedrooms: 3,
-    bathrooms: 2,
-    area: 180,
-    image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1000&q=85",
-    tag: "Contemporary",
-  },
-  {
-    id: 5,
-    title: "The Courtyard Villa",
-    location: "Summit, Addis Ababa",
-    category: "Villa",
-    purpose: "Buy",
-    bedrooms: 4,
-    bathrooms: 3,
-    area: 350,
-    image:
-      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1000&q=85",
-    tag: "Spacious living",
-  },
-  {
-    id: 6,
-    title: "The Penthouse",
-    location: "Bole, Addis Ababa",
-    category: "Penthouse",
-    purpose: "Rent",
-    bedrooms: 3,
-    bathrooms: 3,
-    area: 230,
-    image:
-      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1000&q=85",
-    tag: "City views",
-  },
-];
 
 const categories = [
   {
@@ -441,20 +349,16 @@ useEffect(() => {
   // --------------------------------------------------
 
   const filteredProperties = properties.filter((property) => {
-    const matchesPurpose =
-      purpose === "All" || property.purpose === purpose;
+  const matchesCategory =
+    category === "All" || property.category === category;
 
-    const matchesCategory =
-      category === "All" || property.category === category;
+  const searchText =
+    `${property.name} ${property.location} ${property.category}`.toLowerCase();
 
-    const searchText =
-      `${property.title} ${property.location} ${property.category}`.toLowerCase();
+  const matchesSearch = searchText.includes(search.toLowerCase());
 
-    const matchesSearch = searchText.includes(search.toLowerCase());
-
-    return matchesPurpose && matchesCategory && matchesSearch;
-  });
-
+  return matchesCategory && matchesSearch;
+});
   // --------------------------------------------------
   // ACTIONS
   // --------------------------------------------------
@@ -732,12 +636,12 @@ useEffect(() => {
           {filteredProperties.length > 0 ? (
             <div className="property-grid">
 
-            {filteredProperties.map((property) => (
+          {filteredProperties.map((property) => (
   <Link
-    href="/rooms"
+    href={`/properties/${property.id}`}
     className="property-card"
     key={property.id}
-    aria-label={`Explore ${property.title}`}
+    aria-label={`Explore ${property.name}`}
   >
     <div
       className="property-image"
@@ -746,7 +650,7 @@ useEffect(() => {
       }}
     >
       <span className="property-tag">
-        {property.tag}
+        {property.featured ? "Featured" : property.category}
       </span>
 
       <span className="demo-stamp">
@@ -759,14 +663,10 @@ useEffect(() => {
       <div className="property-card-top">
         <span>{property.category}</span>
 
-        <span>
-          {property.purpose === "Buy"
-            ? "FOR SALE"
-            : "FOR RENT"}
-        </span>
+       {property.type.toUpperCase()}
       </div>
 
-      <h3>{property.title}</h3>
+      <h3>{property.name}</h3>
 
       <p className="property-location">
         <MapPin size={14} />
