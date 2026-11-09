@@ -1,1095 +1,434 @@
-
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowDown,
+  ArrowRight,
   ArrowUpRight,
-  RotateCcw,
-  Volume2,
-  VolumeX,
-  Search,
-  MapPin,
-  BedDouble,
-  Bath,
-  Maximize2,
+  Menu,
+  X,
+  MoveUpRight,
 } from "lucide-react";
-import gsap from "gsap";
+import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import "./cinematic.css";
 
-gsap.registerPlugin(ScrollTrigger);
-
-// --------------------------------------------------
-// CINEMATIC SCENES
-// --------------------------------------------------
-
-const scenes = [
+const properties = [
   {
     number: "01",
-    eyebrow: "THE ARRIVAL",
-    title: "A different\nkind of home.",
-    description: "Some places are beautiful. Others make you feel something.",
-  video: "/videos/exterior.mp4",
-    location: "THE RESIDENCE · ADDIS ABABA",
+    name: "The Horizon House",
+    location: "Bole, Addis Ababa",
+    type: "Private Residence",
+    price: "ETB 28,500,000",
+    image:
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85",
   },
   {
     number: "02",
-    eyebrow: "THE ENTRANCE",
-    title: "Step into\nyour somewhere.",
-    description: "Beyond the entrance, a new story begins.",
-   video: "/videos/entrance-fixed.mp4",
-    location: "THE FIRST IMPRESSION",
+    name: "Casa Verde",
+    location: "Old Airport, Addis Ababa",
+    type: "Modern Villa",
+    price: "ETB 35,000,000",
+    image:
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85",
   },
   {
     number: "03",
-    eyebrow: "THE REVEAL",
-    title: "Room to\nbreathe.",
-    description: "Light, space, and thoughtful details come together.",
-   video: "/videos/living-room-fixed.mp4",
-    location: "THE LIVING SPACE",
-  },
-  {
-    number: "04",
-    eyebrow: "THE DETAILS",
-    title: "Made for\nliving.",
-    description: "Discover the little things that make a place feel like yours.",
-  video: "/videos/details-fixed.mp4",
-    location: "THE FINER DETAILS",
-  },
-];
-
-// --------------------------------------------------
-// PROPERTY DATA
-// --------------------------------------------------
-
-type Listing = {
-  id: number;
-  title: string;
-  location: string;
-  category: string;
-  purpose: "Buy" | "Rent";
-  bedrooms: number;
-  bathrooms: number;
-  area: number;
-  image: string;
-  tag: string;
-};
-
-const properties: Listing[] = [
-  {
-    id: 1,
-    title: "The Modern Residence",
-    location: "Bole, Addis Ababa",
-    category: "Villa",
-    purpose: "Buy",
-    bedrooms: 4,
-    bathrooms: 4,
-    area: 320,
-    image:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1000&q=85",
-    tag: "Featured",
-  },
-  {
-    id: 2,
-    title: "A Quiet City Apartment",
-    location: "Kazanchis, Addis Ababa",
-    category: "Apartment",
-    purpose: "Rent",
-    bedrooms: 2,
-    bathrooms: 2,
-    area: 145,
-    image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1000&q=85",
-    tag: "City living",
-  },
-  {
-    id: 3,
-    title: "The Garden House",
-    location: "Old Airport, Addis Ababa",
-    category: "House",
-    purpose: "Buy",
-    bedrooms: 5,
-    bathrooms: 4,
-    area: 410,
-    image:
-      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1000&q=85",
-    tag: "Architecture",
-  },
-  {
-    id: 4,
-    title: "Elevated Living",
+    name: "The Quiet Residence",
     location: "CMC, Addis Ababa",
-    category: "Apartment",
-    purpose: "Rent",
-    bedrooms: 3,
-    bathrooms: 2,
-    area: 180,
+    type: "Contemporary Home",
+    price: "ETB 19,800,000",
     image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1000&q=85",
-    tag: "Contemporary",
-  },
-  {
-    id: 5,
-    title: "The Courtyard Villa",
-    location: "Summit, Addis Ababa",
-    category: "Villa",
-    purpose: "Buy",
-    bedrooms: 4,
-    bathrooms: 3,
-    area: 350,
-    image:
-      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1000&q=85",
-    tag: "Spacious living",
-  },
-  {
-    id: 6,
-    title: "The Penthouse",
-    location: "Bole, Addis Ababa",
-    category: "Penthouse",
-    purpose: "Rent",
-    bedrooms: 3,
-    bathrooms: 3,
-    area: 230,
-    image:
-      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1000&q=85",
-    tag: "City views",
+      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1400&q=85",
   },
 ];
 
-const categories = [
+const rooms = [
   {
-    name: "Apartments",
-    count: "01",
-    description: "Thoughtful city living.",
+    name: "Living Room",
+    number: "01",
+    description:
+      "Spaces made for slow mornings, meaningful conversations and the everyday moments that become memories.",
     image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=900&q=85",
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1800&q=90",
   },
   {
-    name: "Villas",
-    count: "02",
-    description: "Space to call your own.",
+    name: "Bedroom",
+    number: "02",
+    description:
+      "A personal retreat shaped by warmth, softness and the quiet luxury of having space to breathe.",
     image:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&q=85",
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1800&q=90",
   },
   {
-    name: "Houses",
-    count: "03",
-    description: "A place to grow.",
+    name: "Kitchen",
+    number: "03",
+    description:
+      "Thoughtful details and timeless materials bring people together in the heart of the home.",
     image:
-      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=900&q=85",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=90",
   },
   {
-    name: "Penthouses",
-    count: "04",
-    description: "A different perspective.",
+    name: "Bathroom",
+    number: "04",
+    description:
+      "An everyday ritual transformed into a peaceful moment of restoration and calm.",
     image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=900&q=85",
-  },
-];
-
-const neighborhoods = [
-  {
-    name: "Bole",
-    description: "Modern city energy",
-    image:
-      "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=900&q=85",
-  },
-  {
-    name: "Old Airport",
-    description: "Established residential living",
-    image:
-      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=900&q=85",
-  },
-  {
-    name: "Kazanchis",
-    description: "Connected city life",
-    image:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=85",
-  },
-  {
-    name: "CMC",
-    description: "Room for a new chapter",
-    image:
-      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=900&q=85",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=90",
   },
 ];
 
-// --------------------------------------------------
-// PAGE
-// --------------------------------------------------
-
-export default function CinematicPage() {
-  const tourRef = useRef<HTMLElement>(null);
-  const sceneRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const copyRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  const [muted, setMuted] = useState(true);
-  const [activeScene, setActiveScene] = useState(0);
-
-  const [purpose, setPurpose] = useState<"All" | "Buy" | "Rent">("All");
-  const [category, setCategory] = useState("All");
-  const [search, setSearch] = useState("");
-
-  
-  // --------------------------------------------------
-  // GSAP CINEMATIC SCENE TRANSITIONS
-  // --------------------------------------------------
+export default function HomePage() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeRoom, setActiveRoom] = useState(0);
 
   useEffect(() => {
-    const tour = tourRef.current;
-    if (!tour) return;
+    gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      const panels = sceneRefs.current.filter(
-        (panel): panel is HTMLDivElement => panel !== null
-      );
-
-      const copies = copyRefs.current.filter(
-        (copy): copy is HTMLDivElement => copy !== null
-      );
-
-      if (
-        panels.length !== scenes.length ||
-        copies.length !== scenes.length
-      ) {
-        return;
-      }
-
-      gsap.set(panels, {
-        autoAlpha: 0,
-        scale: 1.06,
-      });
-
-      gsap.set(panels[0], {
-        autoAlpha: 1,
-        scale: 1,
-      });
-
-      gsap.set(copies, {
+      gsap.from(".hero-topline, .hero h1, .hero-side-note", {
         y: 45,
-        autoAlpha: 0,
-      });
-
-      gsap.set(copies[0], {
-        y: 0,
-        autoAlpha: 1,
-      });
-
-      const transitionPositions = [0.85, 1.85, 2.85];
-      const timelineDuration = 4.1;
-
-      const timeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: tour,
-          start: "top top",
-          end: "+=420%",
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-
-          onUpdate: (self) => {
-            const timelinePosition =
-              self.progress * timelineDuration;
-
-            let currentIndex = 0;
-
-            transitionPositions.forEach((position) => {
-              if (timelinePosition >= position + 0.7) {
-                currentIndex++;
-              }
-            });
-
-            const nextScene = Math.min(
-              currentIndex,
-              scenes.length - 1
-            );
-
-            setActiveScene((previous) =>
-              previous === nextScene ? previous : nextScene
-            );
-          },
-        },
-      });
-
-      for (let i = 0; i < scenes.length - 1; i++) {
-        const position = transitionPositions[i];
-
-        timeline.to(
-          panels[i],
-          {
-            autoAlpha: 0,
-            scale: 1.08,
-            duration: 0.8,
-            ease: "power2.inOut",
-          },
-          position
-        );
-
-        timeline.to(
-          copies[i],
-          {
-            y: -35,
-            autoAlpha: 0,
-            duration: 0.5,
-            ease: "power2.in",
-          },
-          position
-        );
-
-        timeline.to(
-          panels[i + 1],
-          {
-            autoAlpha: 1,
-            scale: 1,
-            duration: 0.9,
-            ease: "power2.out",
-          },
-          position + 0.25
-        );
-
-        timeline.to(
-          copies[i + 1],
-          {
-            y: 0,
-            autoAlpha: 1,
-            duration: 0.7,
-            ease: "power3.out",
-          },
-          position + 0.55
-        );
-      }
-
-      gsap.from(".cinematic-nav", {
-        y: -25,
-        autoAlpha: 0,
-        duration: 1,
+        opacity: 0,
+        duration: 1.1,
+        stagger: 0.15,
         ease: "power3.out",
       });
 
-      requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
+      gsap.from(".hero-image", {
+        scale: 1.08,
+        opacity: 0,
+        duration: 1.5,
+        delay: 0.3,
+        ease: "power3.out",
       });
-    }, tour);
 
-    return () => {
-      ctx.revert();
-    };
+      gsap.utils.toArray<HTMLElement>(".reveal-section").forEach((section) => {
+        gsap.from(section, {
+          y: 55,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 85%",
+            once: true,
+          },
+        });
+      });
+    });
+
+    return () => ctx.revert();
   }, []);
 
-  
-// --------------------------------------------------
-// VIDEO PLAYBACK
-// --------------------------------------------------
-
-useEffect(() => {
-  const videos = Array.from(
-    document.querySelectorAll<HTMLVideoElement>(".scene-video")
-  );
-
-  let cancelled = false;
-
-  const playActiveVideo = async () => {
-    const activeVideo = videos[activeScene];
-
-    if (!activeVideo) return;
-
-    // Pause inactive videos first.
-    videos.forEach((video, index) => {
-      if (index !== activeScene && !video.paused) {
-        video.pause();
-      }
-    });
-
-    activeVideo.muted = muted;
-
-    try {
-      await activeVideo.play();
-
-      if (cancelled) {
-        activeVideo.pause();
-      }
-    } catch (error) {
-      if (
-        error instanceof DOMException &&
-        error.name === "AbortError"
-      ) {
-        // Expected when the user scrolls to another scene quickly.
-        return;
-      }
-
-      console.error(
-        `Scene ${activeScene + 1} playback failed:`,
-        error,
-        activeVideo.error
-      );
-    }
-  };
-
-  playActiveVideo();
-
-  return () => {
-    cancelled = true;
-  };
-}, [activeScene, muted]);
-
-
-  // --------------------------------------------------
-  // PROPERTY FILTERING
-  // --------------------------------------------------
-
-  const filteredProperties = properties.filter((property) => {
-    const matchesPurpose =
-      purpose === "All" || property.purpose === purpose;
-
-    const matchesCategory =
-      category === "All" || property.category === category;
-
-    const searchText =
-      `${property.title} ${property.location} ${property.category}`.toLowerCase();
-
-    const matchesSearch = searchText.includes(search.toLowerCase());
-
-    return matchesPurpose && matchesCategory && matchesSearch;
-  });
-
-  // --------------------------------------------------
-  // ACTIONS
-  // --------------------------------------------------
-
-  const replayTour = () => {
-    if (!tourRef.current) return;
-
-    const top =
-      tourRef.current.getBoundingClientRect().top + window.scrollY;
-
-    window.scrollTo({
-      top,
-      behavior: "smooth",
-    });
-  };
-
-  const chooseCategory = (name: string) => {
-    const normalized = name.replace(/s$/, "");
-
-    setCategory(normalized);
-
-    document
-      .getElementById("properties")
-      ?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const clearFilters = () => {
-    setPurpose("All");
-    setCategory("All");
-    setSearch("");
-  };
-
-  // --------------------------------------------------
-  // RENDER
-  // --------------------------------------------------
+  const closeMenu = () => setMenuOpen(false);
 
   return (
-    <main className="cinematic-page" id="top">
-
+    <main>
       {/* NAVIGATION */}
-
-      <nav className="cinematic-nav">
-        <Link href="/" className="cinematic-logo">
-          ESTATE<span>IN MOTION</span>
+      <header className="site-header">
+        <Link href="/" className="brand" onClick={closeMenu}>
+          <span className="brand-symbol">E.</span>
+          <span>ESTATE IN MOTION</span>
         </Link>
 
-        <div className="cinematic-nav-center">
-          A NEW WAY TO EXPERIENCE HOME
-        </div>
+        <nav className="desktop-nav">
+          <Link href="/properties">Properties</Link>
+          <Link href="/rooms">Spaces</Link>
+          <Link href="/architecture">Architecture</Link>
+          <Link href="/cinematic">Experience</Link>
+        </nav>
 
-        <Link href="#properties" className="cinematic-nav-link">
-          EXPLORE HOMES <ArrowUpRight size={14} />
+        <Link href="/contact" className="header-contact">
+          Let's talk <ArrowUpRight size={15} />
         </Link>
-      </nav>
 
-      {/* CINEMATIC INTRO */}
+        <button
+          className="mobile-menu-button"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle navigation"
+        >
+          {menuOpen ? <X /> : <Menu />}
+        </button>
+      </header>
 
-      <section className="cinematic-tour" ref={tourRef}>
-        <div className="cinematic-scenes">
+      {menuOpen && (
+        <nav className="mobile-menu">
+          <Link href="/properties" onClick={closeMenu}>Properties</Link>
+          <Link href="/rooms" onClick={closeMenu}>Spaces</Link>
+          <Link href="/architecture" onClick={closeMenu}>Architecture</Link>
+          <Link href="/cinematic" onClick={closeMenu}>Experience</Link>
+          <Link href="/contact" onClick={closeMenu}>Contact</Link>
+        </nav>
+      )}
 
-          {scenes.map((scene, index) => (
-            <div
-              className="cinematic-scene"
-              key={scene.number}
-              ref={(el) => {
-                sceneRefs.current[index] = el;
-              }}
-            >
-
-  <video
-  className="scene-video"
-  src={scene.video}
-  muted
-  loop
-  playsInline
-  preload="none"
-/>
-
-              <div className="scene-shade" />
-
-              <div
-                className="scene-copy"
-                ref={(el) => {
-                  copyRefs.current[index] = el;
-                }}
-              >
-                <span className="scene-eyebrow">
-                  <span>{scene.number}</span>
-                  {scene.eyebrow}
-                </span>
-
-                <h1>
-                  {scene.title.split("\n").map((line, i) => (
-                    <span key={i}>{line}</span>
-                  ))}
-                </h1>
-
-                <p>{scene.description}</p>
-
-                <div className="scene-location">
-                  <span />
-                  {scene.location}
-                </div>
-              </div>
-            </div>
-          ))}
-
+      {/* HERO */}
+      <section className="hero">
+        <div className="hero-topline">
+          <span>INDEPENDENT REAL ESTATE EXPERIENCE</span>
+          <span>ADDIS ABABA · ETHIOPIA</span>
         </div>
 
-        {/* CINEMATIC CONTROLS */}
+        <div className="hero-title-wrap">
+          <h1>
+            Find your
+            <span className="hero-title-second">
+              somewhere<span className="hero-asterisk">*</span>
+            </span>
+          </h1>
 
-        <div className="cinematic-bottom">
+          <p className="hero-side-note">
+            Not just a property.
+            <br />
+            A place to become.
+          </p>
+        </div>
 
-          <div className="cinematic-progress">
-            <span>0{activeScene + 1}</span>
+        <div className="hero-image">
+          <Image
+            src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2400&q=90"
+            alt="Beautiful contemporary luxury residence"
+            fill
+            priority
+            unoptimized
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+          />
 
-            <div className="progress-track">
-              <div
-                className="progress-fill"
-                style={{
-                  width: `${((activeScene + 1) / scenes.length) * 100}%`,
-                }}
-              />
-            </div>
-
-            <span>04</span>
+          <div className="hero-floating-label">
+            <span>01 / 04</span>
+            <span>THE ART OF LIVING</span>
           </div>
+        </div>
 
-          <div className="cinematic-scroll-hint">
+        <div className="hero-bottom">
+          <span>DISCOVER A DIFFERENT WAY HOME</span>
+          <a href="#introduction">
             SCROLL TO EXPLORE <ArrowDown size={14} />
-          </div>
-
-          <button
-            className="sound-toggle"
-            onClick={() => setMuted((value) => !value)}
-            aria-label={muted ? "Unmute videos" : "Mute videos"}
-          >
-            {muted ? (
-              <VolumeX size={16} />
-            ) : (
-              <Volume2 size={16} />
-            )}
-
-            {muted ? "SOUND OFF" : "SOUND ON"}
-          </button>
-
+          </a>
         </div>
       </section>
 
-      {/* PROPERTY SEARCH */}
+      {/* INTRODUCTION */}
+      <section className="intro-section reveal-section" id="introduction">
+        <div className="section-eyebrow">
+          <span>01 — OUR PHILOSOPHY</span>
+          <span>MORE THAN FOUR WALLS</span>
+        </div>
 
-      <section className="property-search-section" id="properties">
-        <div className="section-shell">
+        <div className="intro-content">
+          <h2>
+            A home is not
+            <br />
+            simply a place.
+            <br />
+            <span>It's a feeling.</span>
+          </h2>
 
-          <div className="section-kicker">
-            <span>01 / FIND YOUR PLACE</span>
-            <span>ADDIS ABABA · ETHIOPIA</span>
-          </div>
-
-          <div className="search-heading">
-            <div>
-              <span className="section-eyebrow">
-                A PLACE THAT FEELS LIKE YOURS
-              </span>
-
-              <h2>
-                Find your <em>somewhere.</em>
-              </h2>
-            </div>
-
+          <div className="intro-description">
             <p>
-              Whether you're looking to buy or rent, discover spaces
-              that make coming home feel different.
+              We believe extraordinary spaces do more than look beautiful.
+              They change the way you live, feel and experience the everyday.
             </p>
-          </div>
 
-          <div className="property-search-box">
-
-            <div className="purpose-switch">
-              {(["All", "Buy", "Rent"] as const).map((item) => (
-                <button
-                  key={item}
-                  className={purpose === item ? "active" : ""}
-                  onClick={() => setPurpose(item)}
-                >
-                  {item === "All" ? "All homes" : item}
-                </button>
-              ))}
-            </div>
-
-            <div className="search-controls">
-
-              <label className="search-field">
-                <MapPin size={18} />
-
-                <span>
-                  <small>LOCATION OR KEYWORD</small>
-
-                  <input
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Try Bole, villa, apartment..."
-                  />
-                </span>
-              </label>
-
-              <label className="search-field category-field">
-                <span>
-                  <small>PROPERTY TYPE</small>
-
-                  <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                  >
-                    <option value="All">All property types</option>
-                    <option value="Apartment">Apartment</option>
-                    <option value="Villa">Villa</option>
-                    <option value="House">House</option>
-                    <option value="Penthouse">Penthouse</option>
-                  </select>
-                </span>
-              </label>
-
-              <button
-                className="search-submit"
-                onClick={() =>
-                  document
-                    .getElementById("property-results")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-              >
-                <Search size={17} />
-                SEARCH HOMES
-              </button>
-
-            </div>
+            <Link href="/architecture" className="text-link">
+              Discover our philosophy <ArrowUpRight size={16} />
+            </Link>
           </div>
         </div>
       </section>
 
       {/* FEATURED PROPERTIES */}
-
-      <section className="featured-section" id="property-results">
-        <div className="section-shell">
-
-          <div className="featured-heading">
-            <div>
-              <span className="section-eyebrow">
-                THE PROPERTY COLLECTION
-              </span>
-
-              <h2>
-                Spaces worth <em>discovering.</em>
-              </h2>
-            </div>
-
-            <span className="demo-label">
-              ILLUSTRATIVE DEMO LISTINGS
-            </span>
-          </div>
-
-          <div className="listing-toolbar">
-            <span>
-              {filteredProperties.length} properties to explore
-            </span>
-
-            <button onClick={clearFilters}>
-              CLEAR FILTERS <RotateCcw size={13} />
-            </button>
-          </div>
-
-          {filteredProperties.length > 0 ? (
-            <div className="property-grid">
-
-              {filteredProperties.map((property) => (
-                <article className="property-card" key={property.id}>
-
-                  <div
-                    className="property-image"
-                    style={{
-                      backgroundImage: `url("${property.image}")`,
-                    }}
-                  >
-                    <span className="property-tag">
-                      {property.tag}
-                    </span>
-
-                    <span className="demo-stamp">
-                      DEMO
-                    </span>
-                  </div>
-
-                  <div className="property-card-content">
-
-                    <div className="property-card-top">
-                      <span>{property.category}</span>
-
-                      <span>
-                        {property.purpose === "Buy"
-                          ? "FOR SALE"
-                          : "FOR RENT"}
-                      </span>
-                    </div>
-
-                    <h3>{property.title}</h3>
-
-                    <p className="property-location">
-                      <MapPin size={14} />
-                      {property.location}
-                    </p>
-
-                    <div className="property-features">
-                      <span>
-                        <BedDouble size={15} />
-                        {property.bedrooms} beds
-                      </span>
-
-                      <span>
-                        <Bath size={15} />
-                        {property.bathrooms} baths
-                      </span>
-
-                      <span>
-                        <Maximize2 size={14} />
-                        {property.area} m²
-                      </span>
-                    </div>
-
-                    <div className="property-card-footer">
-                      <span>PRICE ON REQUEST</span>
-
-                      <span className="property-arrow">
-                        <ArrowUpRight size={17} />
-                      </span>
-                    </div>
-
-                  </div>
-                </article>
-              ))}
-
-            </div>
-          ) : (
-            <div className="empty-properties">
-              <Search size={25} />
-
-              <h3>No matching properties</h3>
-
-              <p>
-                Try changing your search or clearing the filters.
-              </p>
-
-              <button onClick={clearFilters}>
-                SHOW ALL PROPERTIES
-              </button>
-            </div>
-          )}
-
+      <section className="properties-section" id="properties">
+        <div className="section-eyebrow">
+          <span>02 — SELECTED SPACES</span>
+          <span>CURATED WITH INTENTION</span>
         </div>
-      </section>
 
-      {/* PROPERTY CATEGORIES */}
+        <div className="properties-heading reveal-section">
+          <h2>
+            Spaces worth
+            <br />
+            <span>coming home to.</span>
+          </h2>
 
-      <section className="categories-section">
-        <div className="section-shell">
-
-          <div className="section-kicker">
-            <span>02 / EXPLORE BY TYPE</span>
-            <span>FIND YOUR KIND OF SPACE</span>
-          </div>
-
-          <div className="categories-heading">
-            <span className="section-eyebrow">
-              ROOM FOR EVERY STORY
-            </span>
-
-            <h2>
-              What does <em>home</em> look like?
-            </h2>
-          </div>
-
-          <div className="category-grid">
-            {categories.map((item) => (
-              <button
-                className="category-card"
-                key={item.name}
-                onClick={() => chooseCategory(item.name)}
-                style={{
-                  backgroundImage: `url("${item.image}")`,
-                }}
-              >
-                <span className="category-number">
-                  {item.count}
-                </span>
-
-                <span className="category-card-bottom">
-                  <span>
-                    <strong>{item.name}</strong>
-                    <small>{item.description}</small>
-                  </span>
-
-                  <ArrowUpRight size={20} />
-                </span>
-              </button>
-            ))}
-          </div>
-
+          <p>
+            A collection of distinctive properties, selected for their
+            character, architecture and possibility.
+          </p>
         </div>
-      </section>
 
-      {/* LOCATIONS */}
-
-      <section className="locations-section" id="locations">
-        <div className="section-shell">
-
-          <div className="locations-heading">
-            <div>
-              <span className="section-eyebrow">
-                03 / EXPLORE THE CITY
-              </span>
-
-              <h2>
-                Find your place in <em>Addis.</em>
-              </h2>
-            </div>
-
-            <p>
-              Every neighborhood has its own rhythm.
-              Discover the character of the city, one place at a time.
-            </p>
-          </div>
-
-          <div className="locations-grid">
-            {neighborhoods.map((place, index) => (
-              <div className="location-card" key={place.name}>
-
-                <div
-                  className="location-image"
-                  style={{
-                    backgroundImage: `url("${place.image}")`,
-                  }}
+        <div className="property-grid">
+          {properties.map((property) => (
+            <article
+              className={`property-card property-card-${property.number}`}
+              key={property.number}
+            >
+              <Link href="/properties" className="property-image">
+                <Image
+                  src={property.image}
+                  alt={property.name}
+                  fill
+                  unoptimized
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  style={{ objectFit: "cover" }}
                 />
 
-                <div className="location-card-caption">
-                  <span>0{index + 1}</span>
+                <span className="property-number">{property.number}</span>
+                <span className="property-open">
+                  <ArrowUpRight size={20} />
+                </span>
+              </Link>
 
-                  <div>
-                    <h3>{place.name}</h3>
-                    <p>{place.description}</p>
-                  </div>
-
-                  <ArrowUpRight size={18} />
+              <div className="property-info">
+                <div>
+                  <span className="property-type">{property.type}</span>
+                  <h3>{property.name}</h3>
+                  <span className="property-location">
+                    {property.location}
+                  </span>
                 </div>
 
+                <span className="property-price">{property.price}</span>
               </div>
-            ))}
-          </div>
+            </article>
+          ))}
+        </div>
 
-          <p className="location-note">
-            Neighborhoods shown for discovery. Property availability
-            will be added as verified listings become available.
-          </p>
-
+        <div className="properties-footer">
+          <span>THOUGHTFULLY SELECTED. NEVER ORDINARY.</span>
+          <Link href="/properties" className="round-link">
+            Explore all properties <ArrowUpRight size={17} />
+          </Link>
         </div>
       </section>
 
-      {/* BRAND STORY */}
-
-      <section className="story-section" id="about">
-        <div className="story-image">
-          <div className="story-image-overlay" />
-          <span>THE ART OF FINDING HOME</span>
+      {/* ROOM EXPERIENCE */}
+      <section className="experience-section" id="spaces">
+        <div className="section-eyebrow">
+          <span>03 — THE ROOM EXPERIENCE</span>
+          <span>STEP INSIDE</span>
         </div>
 
-        <div className="story-content">
-          <span className="section-eyebrow">
-            04 / OUR PHILOSOPHY
-          </span>
-
+        <div className="experience-heading reveal-section">
           <h2>
-            Real estate is more than <em>real estate.</em>
+            Every room tells
+            <br />
+            <span>its own story.</span>
           </h2>
-
           <p>
-            It's where ordinary days become memories.
-            It's the quiet morning light, the room that brings everyone
-            together, and the feeling of finally being home.
+            Explore the details. Discover the atmosphere.
+            Experience the feeling of being home.
           </p>
-
-          <p>
-            Estate in Motion brings properties to life through thoughtful
-            discovery and immersive experiences.
-          </p>
-
-          <a href="#how-it-works" className="story-link">
-            DISCOVER OUR APPROACH <ArrowUpRight size={16} />
-          </a>
         </div>
-      </section>
 
-      {/* HOW IT WORKS */}
+        <div className="room-experience">
+          <div className="room-image-wrap">
+            <div className="room-image" key={rooms[activeRoom].image}>
+              <Image
+                src={rooms[activeRoom].image}
+                alt={rooms[activeRoom].name}
+                fill
+                unoptimized
+                sizes="100vw"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
 
-      <section className="how-section" id="how-it-works">
-        <div className="section-shell">
-
-          <div className="section-kicker">
-            <span>05 / THE EXPERIENCE</span>
-            <span>FROM DISCOVERY TO DOORWAY</span>
-          </div>
-
-          <div className="how-heading">
-            <span className="section-eyebrow">
-              A MORE THOUGHTFUL JOURNEY
+            <span className="room-image-top">
+              {rooms[activeRoom].number} / 04
             </span>
 
-            <h2>
-              Your next chapter, <em>in motion.</em>
-            </h2>
+            <span className="room-image-bottom">
+              AN EXPERIENCE IN EVERY DETAIL
+            </span>
           </div>
 
-          <div className="steps-grid">
-            <article>
-              <span>01</span>
-              <h3>Discover</h3>
-              <p>
-                Explore properties and find spaces that speak to you.
-              </p>
-            </article>
+          <div className="room-selector">
+            <span className="room-selector-label">EXPLORE THE ROOMS</span>
 
-            <article>
-              <span>02</span>
-              <h3>Experience</h3>
-              <p>
-                See the spaces through immersive photos and cinematic tours.
-              </p>
-            </article>
+            {rooms.map((room, index) => (
+              <button
+                key={room.number}
+                className={`room-option ${
+                  activeRoom === index ? "active" : ""
+                }`}
+                onClick={() => setActiveRoom(index)}
+              >
+                <span>{room.number}</span>
+                <strong>{room.name}</strong>
+                <ArrowUpRight size={18} />
+              </button>
+            ))}
 
-            <article>
-              <span>03</span>
-              <h3>Connect</h3>
-              <p>
-                Ask questions and arrange a viewing for a property.
-              </p>
-            </article>
-
-            <article>
-              <span>04</span>
-              <h3>Find home</h3>
-              <p>
-                Take the next step toward a place that feels like yours.
-              </p>
-            </article>
+            <div className="room-description">
+              <p>{rooms[activeRoom].description}</p>
+              <Link href="/rooms" className="text-link">
+                Explore all spaces <ArrowRight size={15} />
+              </Link>
+            </div>
           </div>
-
         </div>
       </section>
 
-      {/* FINAL CTA */}
+      {/* MANIFESTO */}
+      <section className="manifesto-section reveal-section">
+        <div className="manifesto-top">
+          <span>04 — A DIFFERENT PERSPECTIVE</span>
+          <span>EST. 2026</span>
+        </div>
 
-      <section className="final-cta" id="contact">
-        <div className="final-cta-image" />
-
-        <div className="final-cta-content">
-          <span>YOUR NEXT CHAPTER STARTS HERE</span>
+        <div className="manifesto-content">
+          <span className="manifesto-symbol">✳</span>
 
           <h2>
-            Somewhere is <em>waiting.</em>
+            The future of living
+            <br />
+            is not somewhere
+            <br />
+            <span>you find.</span>
+            <br />
+            It's somewhere
+            <br />
+            you feel.
           </h2>
 
-          <p>
-            Explore the possibilities. Find a space that feels like home.
-          </p>
-
-          <a href="#properties">
-            EXPLORE PROPERTIES <ArrowUpRight size={16} />
-          </a>
+          <p className="manifesto-signature">ESTATE IN MOTION®</p>
         </div>
       </section>
 
       {/* FOOTER */}
-
-      <footer className="estate-footer">
+      <footer className="footer" id="contact">
         <div className="footer-main">
-
           <div className="footer-brand">
-            <Link href="/" className="cinematic-logo">
-              ESTATE<span>IN MOTION</span>
+            <Link href="/" className="brand">
+              <span className="brand-symbol">E.</span>
+              <span>ESTATE IN MOTION</span>
             </Link>
 
             <p>
-              A new way to discover, experience, and find your somewhere.
+              A new perspective on
+              <br />
+              spaces and living.
             </p>
           </div>
 
-          <div className="footer-column">
-            <span>EXPLORE</span>
-            <a href="#properties">Properties</a>
-            <a href="#locations">Locations</a>
-            <a href="#how-it-works">How it works</a>
+          <div className="footer-contact">
+            <span>HAVE A PLACE IN MIND?</span>
+            <Link href="/contact">
+              Let's make it happen <MoveUpRight size={24} />
+            </Link>
           </div>
-
-          <div className="footer-column">
-            <span>DISCOVER</span>
-            <a href="#about">Our story</a>
-            <a href="#properties">Buy a property</a>
-            <a href="#properties">Rent a property</a>
-          </div>
-
-          <div className="footer-column">
-            <span>GET IN TOUCH</span>
-            <a href="#contact">Contact</a>
-            <a href="#contact">Request a viewing</a>
-          </div>
-
         </div>
 
         <div className="footer-bottom">
           <span>© 2026 ESTATE IN MOTION</span>
-          <span>MADE TO BE EXPERIENCED.</span>
-
-          <a
-            href="#top"
-            onClick={(e) => {
-              e.preventDefault();
-
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              });
-            }}
-          >
+          <span>ADDIS ABABA, ETHIOPIA</span>
+          <a href="#top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
             BACK TO TOP ↑
           </a>
         </div>
       </footer>
-
     </main>
   );
 }
