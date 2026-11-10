@@ -45,6 +45,7 @@ const categoryMap: Record<string, string> = {
 
 
   const [activeCategory, setActiveCategory] = useState("All spaces");
+  const [categoryOpen, setCategoryOpen] = useState(false);
 
 useEffect(() => {
   if (categoryFromUrl) {
@@ -248,23 +249,43 @@ return matchesCategory && matchesLocation && matchesSearch;
 </div>
         </div>
 <div className="property-filter-row">
-  <label className="category-dropdown">
+  <div className="category-dropdown">
     <span>PROPERTY TYPE</span>
 
-    <select
-      value={activeCategory}
-      onChange={(event) => setActiveCategory(event.target.value)}
-      aria-label="Filter by property type"
-    >
-      {categories.map((category) => (
-        <option key={category} value={category}>
-          {category}
-        </option>
-      ))}
-    </select>
+    <div className="custom-category">
+      <button
+        type="button"
+        className="custom-category-trigger"
+        onClick={() => setCategoryOpen(!categoryOpen)}
+      >
+        {activeCategory}
+        <ArrowDown
+          size={16}
+          className={categoryOpen ? "category-arrow open" : "category-arrow"}
+        />
+      </button>
 
-    <ArrowDown size={16} />
-  </label>
+      {categoryOpen && (
+        <div className="custom-category-menu">
+          {categories.map((category) => (
+            <button
+              key={category}
+              type="button"
+              className={`custom-category-option ${
+                activeCategory === category ? "selected" : ""
+              }`}
+              onClick={() => {
+                setActiveCategory(category);
+                setCategoryOpen(false);
+              }}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
 
   <span className="property-result-count">
     {filteredProperties.length.toString().padStart(2, "0")} SPACES
