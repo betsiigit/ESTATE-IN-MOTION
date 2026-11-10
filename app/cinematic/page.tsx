@@ -968,25 +968,25 @@ useEffect(() => {
             </p>
           </div>
 
-          <div className="footer-column">
-            <span>EXPLORE</span>
-            <a href="#properties">Properties</a>
-            <a href="#locations">Locations</a>
-            <a href="#how-it-works">How it works</a>
-          </div>
+        <div className="footer-column">
+  <span>EXPLORE</span>
+  <Link href="/properties">Properties</Link>
+  <Link href="/#locations">Locations</Link>
+  <Link href="/#how-it-works">How it works</Link>
+</div>
 
-          <div className="footer-column">
-            <span>DISCOVER</span>
-            <a href="#about">Our story</a>
-            <a href="#properties">Buy a property</a>
-            <a href="#properties">Rent a property</a>
-          </div>
+<div className="footer-column">
+  <span>DISCOVER</span>
+  <Link href="/#about">Our story</Link>
+  <Link href="/properties">Buy a property</Link>
+  <Link href="/properties">Rent a property</Link>
+</div>
 
-          <div className="footer-column">
-            <span>GET IN TOUCH</span>
-            <a href="#contact">Contact</a>
-            <a href="#contact">Request a viewing</a>
-          </div>
+<div className="footer-column">
+  <span>GET IN TOUCH</span>
+  <Link href="/contact">Contact</Link>
+  <Link href="/contact">Request a viewing</Link>
+</div>
 
         </div>
 
