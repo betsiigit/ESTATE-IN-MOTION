@@ -126,9 +126,9 @@ export default function RoomsPage() {
           </span>
         </div>
 
-              <div className="room-experience">
-          <Dollhouse />
-        </div>
+           <div className="room-experience">
+  <Dollhouse activeRoom={room.name} />
+</div>
 
         <div className="room-selector">
           <span className="rooms-eyebrow">CHOOSE YOUR SPACE</span>

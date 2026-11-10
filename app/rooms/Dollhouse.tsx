@@ -56,8 +56,11 @@ function ApartmentModel() {
   );
 }
 
-
-export default function Dollhouse() {
+export default function Dollhouse({
+  activeRoom,
+}: {
+  activeRoom: string;
+}) {
   return (
     <div
       style={{
@@ -89,7 +92,7 @@ export default function Dollhouse() {
             fontFamily: "Georgia",
           }}
         >
-          Modern Flat-Roof Villa
+         {activeRoom}
         </div>
       </div>
 
