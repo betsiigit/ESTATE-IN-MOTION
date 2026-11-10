@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Dollhouse from "./Dollhouse";
 import "./rooms.css";
 import {
   ArrowDown,
@@ -125,51 +126,8 @@ export default function RoomsPage() {
           </span>
         </div>
 
-        <div className="room-experience">
-          <div className="room-image">
-            <Image
-              key={room.image}
-              src={room.image}
-              alt={room.name}
-              fill
-              priority
-              unoptimized
-              sizes="100vw"
-              style={{ objectFit: "cover" }}
-            />
-            <div className="room-image-overlay" />
-            <span className="room-image-label">{room.category} / {room.number}</span>
-            <span className="room-image-caption">ESTATE IN MOTION — INTERIOR STUDIES</span>
-          </div>
-
-          <div className="room-information">
-            <span className="rooms-eyebrow">THE ROOM / {room.number}</span>
-            <h3>{room.name}</h3>
-            <p>{room.description}</p>
-
-            <div className="room-detail-line" />
-            <span className="room-detail">{room.detail}</span>
-
-            <div className="room-controls">
-              <button onClick={previousRoom} aria-label="Previous room">
-                <ArrowLeft size={19} />
-              </button>
-              <button onClick={nextRoom} aria-label="Next room">
-                <ArrowRight size={19} />
-              </button>
-            </div>
-
-            <div className="room-progress">
-              {rooms.map((item, index) => (
-                <button
-                  key={item.number}
-                  onClick={() => setActiveRoom(index)}
-                  className={activeRoom === index ? "active" : ""}
-                  aria-label={`Explore ${item.name}`}
-                />
-              ))}
-            </div>
-          </div>
+              <div className="room-experience">
+          <Dollhouse />
         </div>
 
         <div className="room-selector">
