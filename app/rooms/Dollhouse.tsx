@@ -47,8 +47,8 @@ function RoomCamera({ activeRoom }: { activeRoom: string }) {
   target: [0, 3, 0],
 },
     "The Kitchen": {
-      position: [3, 3, 4],
-      target: [3, 1.5, 2],
+      position: [11.212, 3.796, 0.656],
+target: [0, 3, 0],
     },
     "The Bathroom": {
       position: [-3, 3, -4],
