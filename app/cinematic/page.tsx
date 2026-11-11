@@ -572,7 +572,7 @@ useEffect(() => {
  <div className="category-grid">
   {categories.map((item) => (
     <Link
-      href={`/properties?category=${encodeURIComponent(item.name)}`}
+      href={`/rooms?type=${encodeURIComponent(item.name.toLowerCase())}`}
       className="category-card"
       key={item.name}
       style={{
@@ -756,7 +756,7 @@ useEffect(() => {
           <div className="category-grid">
           {categories.map((item) => (
   <Link
-    href={`/properties?category=${encodeURIComponent(item.name)}`}
+   href={`/rooms?type=${encodeURIComponent(item.name.toLowerCase())}`}
     className="category-card"
     key={item.name}
     style={{
