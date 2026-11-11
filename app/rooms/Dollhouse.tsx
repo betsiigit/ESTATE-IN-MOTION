@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Suspense, useMemo, useRef, useEffect } from "react";
+import { Suspense, useMemo, useRef, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
   OrbitControls,
@@ -20,14 +20,19 @@ function RoomCamera({ activeRoom }: { activeRoom: string }) {
     position: [number, number, number];
     target: [number, number, number];
   }> = {
+
+    "Overview": {
+  position: [12, 9, 12],
+  target: [0, 3, 0],
+},
     "The Living Room": {
       position: [-3, 3, 5],
       target: [-3, 1.5, 1],
     },
-    "The Bedroom": {
-      position: [3, 3, -4],
-      target: [3, 1.5, -2],
-    },
+ "The Bedroom": {
+  position: [2, 2.5, -3],
+  target: [2, 1.2, -1],
+},
     "The Kitchen": {
       position: [3, 3, 4],
       target: [3, 1.5, 2],
@@ -130,6 +135,16 @@ export default function Dollhouse({
 }: {
   activeRoom: string;
 }) {
+
+  const [cameraRoom, setCameraRoom] = useState("Overview");
+const previousRoom = useRef(activeRoom);
+
+useEffect(() => {
+  if (previousRoom.current !== activeRoom) {
+    setCameraRoom(activeRoom);
+    previousRoom.current = activeRoom;
+  }
+}, [activeRoom]);
   return (
     <div
       style={{
@@ -214,22 +229,44 @@ export default function Dollhouse({
           />
         </Suspense>
 
-      <RoomCamera activeRoom={activeRoom} />
+     <RoomCamera activeRoom={cameraRoom} />
       </Canvas>
 
-      <div
-        style={{
-          position: "absolute",
-          bottom: 24,
-          right: 28,
-          fontSize: 10,
-          letterSpacing: 1.5,
-          color: "#55564f",
-          pointerEvents: "none",
-        }}
-      >
-        DRAG TO ROTATE · SCROLL TO ZOOM
-      </div>
+     <div
+  style={{
+    position: "absolute",
+    bottom: 24,
+    right: 28,
+    display: "flex",
+    alignItems: "center",
+    gap: 18,
+  }}
+>
+  <span
+    style={{
+      fontSize: 10,
+      letterSpacing: 1.5,
+      color: "#55564f",
+    }}
+  >
+    DRAG TO ROTATE · SCROLL TO ZOOM
+  </span>
+
+  <button
+    onClick={() => setCameraRoom("Overview")}
+    style={{
+      padding: "12px 20px",
+      background: "#22251f",
+      color: "#e9e5dc",
+      border: "none",
+      cursor: "pointer",
+      fontSize: 10,
+      letterSpacing: 1.5,
+    }}
+  >
+    ↺ OVERVIEW
+  </button>
+</div>
     </div>
   );
 }
