@@ -1,15 +1,84 @@
 
 "use client";
 
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, useRef, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
   OrbitControls,
-  Environment,
   ContactShadows,
   useGLTF,
 } from "@react-three/drei";
+import { useThree, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+
+
+function RoomCamera({ activeRoom }: { activeRoom: string }) {
+  const { camera } = useThree();
+  const controls = useRef<any>(null);
+
+  const destinations: Record<string, {
+    position: [number, number, number];
+    target: [number, number, number];
+  }> = {
+    "The Living Room": {
+      position: [-3, 3, 5],
+      target: [-3, 1.5, 1],
+    },
+    "The Bedroom": {
+      position: [3, 3, -4],
+      target: [3, 1.5, -2],
+    },
+    "The Kitchen": {
+      position: [3, 3, 4],
+      target: [3, 1.5, 2],
+    },
+    "The Bathroom": {
+      position: [-3, 3, -4],
+      target: [-3, 1.5, -2],
+    },
+  };
+
+  const destination = destinations[activeRoom];
+
+  useEffect(() => {
+    if (!destination) return;
+
+    camera.userData.destinationPosition = new THREE.Vector3(
+      ...destination.position
+    );
+    camera.userData.destinationTarget = new THREE.Vector3(
+      ...destination.target
+    );
+  }, [activeRoom, camera]);
+
+  useFrame(() => {
+    const position = camera.userData.destinationPosition;
+    const target = camera.userData.destinationTarget;
+
+    if (!position || !target) return;
+
+    camera.position.lerp(position, 0.035);
+
+    if (controls.current) {
+      controls.current.target.lerp(target, 0.035);
+      controls.current.update();
+    }
+  });
+
+  return (
+    <OrbitControls
+      ref={controls}
+      makeDefault
+      target={[0, 3, 0]}
+      minDistance={1}
+      maxDistance={20}
+      minPolarAngle={0.25}
+      maxPolarAngle={1.5}
+      enablePan={false}
+      zoomSpeed={0.7}
+    />
+  );
+}
 
 function ApartmentModel() {
   const { scene } = useGLTF("/models/house_3d.glb");
@@ -102,6 +171,8 @@ export default function Dollhouse({
         dpr={[1, 2]}
       >
         <color attach="background" args={["#e9e5dc"]} />
+        <axesHelper args={[6]} />
+<gridHelper args={[20, 20]} />
 
         <ambientLight intensity={1.2} />
 
@@ -143,16 +214,7 @@ export default function Dollhouse({
           />
         </Suspense>
 
-        <OrbitControls
-          makeDefault
-          target={[0, 3, 0]}
-          minDistance={3}
-          maxDistance={20}
-          minPolarAngle={0.25}
-          maxPolarAngle={1.5}
-          enablePan={false}
-          zoomSpeed={0.7}
-        />
+      <RoomCamera activeRoom={activeRoom} />
       </Canvas>
 
       <div
