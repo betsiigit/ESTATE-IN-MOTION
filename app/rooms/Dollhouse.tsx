@@ -114,7 +114,25 @@ export default function Dollhouse({
        <Suspense fallback={null}>
           <ApartmentModel />
 
-          <Environment preset="studio" />
+          <ambientLight intensity={0.8} />
+
+<hemisphereLight
+  args={["#ffffff", "#b8a995", 1.2]}
+/>
+
+<directionalLight
+  position={[10, 15, 10]}
+  intensity={2}
+  castShadow
+  shadow-mapSize-width={2048}
+  shadow-mapSize-height={2048}
+/>
+
+<pointLight
+  position={[-8, 5, -8]}
+  intensity={0.7}
+  color="#fff1dc"
+/>
 
           <ContactShadows
             position={[0, 0.01, 0]}
