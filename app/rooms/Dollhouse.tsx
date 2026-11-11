@@ -13,8 +13,21 @@ import * as THREE from "three";
 
 
 function RoomCamera({ activeRoom }: { activeRoom: string }) {
-  const { camera } = useThree();
+ const { camera, controls: defaultControls } = useThree();
   const controls = useRef<any>(null);
+
+  useEffect(() => {
+  const interval = setInterval(() => {
+    const orbit = controls.current;
+
+    if (!orbit) return;
+
+    console.log("CAMERA POSITION:", camera.position.toArray());
+    console.log("ROOM TARGET:", orbit.target.toArray());
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [camera]);
 
   const destinations: Record<string, {
     position: [number, number, number];
@@ -29,9 +42,9 @@ function RoomCamera({ activeRoom }: { activeRoom: string }) {
       position: [-3, 3, 5],
       target: [-3, 1.5, 1],
     },
- "The Bedroom": {
-  position: [2, 2.5, -3],
-  target: [2, 1.2, -1],
+"The Bedroom": {
+  position: [0.408, 5.25, 9.482],
+  target: [0, 3, 0],
 },
     "The Kitchen": {
       position: [3, 3, 4],
@@ -56,19 +69,33 @@ function RoomCamera({ activeRoom }: { activeRoom: string }) {
     );
   }, [activeRoom, camera]);
 
-  useFrame(() => {
-    const position = camera.userData.destinationPosition;
-    const target = camera.userData.destinationTarget;
+//   useFrame(() => {
+//   const position = camera.userData.destinationPosition;
+//   const target = camera.userData.destinationTarget;
 
-    if (!position || !target) return;
+//   if (!position || !target) return;
 
-    camera.position.lerp(position, 0.035);
+//   camera.position.lerp(position, 0.035);
 
-    if (controls.current) {
-      controls.current.target.lerp(target, 0.035);
-      controls.current.update();
-    }
-  });
+//   if (controls.current) {
+//     controls.current.target.lerp(target, 0.035);
+//     controls.current.update();
+//   }
+// });
+
+  // useFrame(() => {
+  //   const position = camera.userData.destinationPosition;
+  //   const target = camera.userData.destinationTarget;
+
+  //   if (!position || !target) return;
+
+  //   camera.position.lerp(position, 0.035);
+
+  //   if (controls.current) {
+  //     controls.current.target.lerp(target, 0.035);
+  //     controls.current.update();
+  //   }
+  // });
 
   return (
     <OrbitControls
