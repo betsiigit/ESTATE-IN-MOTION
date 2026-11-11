@@ -273,18 +273,22 @@
 }
 
 /* ROOM INFORMATION */
-
 .room-information {
-  padding: 55px 38px 40px;
+  padding: 40px 32px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  min-width: 0;
+}
+
+.room-information .rooms-eyebrow {
+  margin-bottom: 20px;
 }
 
 .room-information h3 {
-  margin: 45px 0 22px;
+  margin: 30px 0 18px;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(35px, 3.3vw, 49px);
+  font-size: clamp(32px, 3vw, 45px);
   font-weight: 400;
   line-height: 1.04;
   letter-spacing: -1.5px;
@@ -300,7 +304,7 @@
 .room-detail-line {
   width: 100%;
   height: 1px;
-  margin: 35px 0 20px;
+  margin: 25px 0 18px;
   background: var(--rooms-line);
 }
 
@@ -310,7 +314,6 @@
   line-height: 1.8;
   letter-spacing: 0.8px;
 }
-
 .room-controls {
   display: flex;
   gap: 10px;
@@ -357,16 +360,13 @@
 }
 
 /* ROOM SELECTOR */
-
 .room-selector {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 50px;
-  padding-top: 75px;
+  display: block;
+  padding: 0;
 }
 
 .room-selector > .rooms-eyebrow {
-  padding-top: 15px;
+  padding-top: 0;
 }
 
 .room-selector-list {
@@ -657,11 +657,10 @@
     min-height: 390px;
     height: 65vw;
   }
-
-  .room-information {
-    min-height: 390px;
-    padding: 35px 25px;
-  }
+.room-information {
+  min-height: auto;
+  padding: 35px 25px;
+}
 
   .room-information h3 {
     margin: 30px 0 18px;

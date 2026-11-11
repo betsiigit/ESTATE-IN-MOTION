@@ -126,26 +126,39 @@ export default function RoomsPage() {
           </span>
         </div>
 
-           <div className="room-experience">
+          <div className="room-experience">
   <Dollhouse activeRoom={room.name} />
 </div>
 
-        <div className="room-selector">
-          <span className="rooms-eyebrow">CHOOSE YOUR SPACE</span>
-          <div className="room-selector-list">
-            {rooms.map((item, index) => (
-              <button
-                key={item.number}
-                className={activeRoom === index ? "active" : ""}
-                onClick={() => setActiveRoom(index)}
-              >
-                <span>{item.number}</span>
-                <span>{item.name}</span>
-                <ArrowUpRight size={16} />
-              </button>
-            ))}
-          </div>
-        </div>
+<div className="room-experience">
+  <Dollhouse activeRoom={room.name} />
+
+  <div className="room-information">
+    <span className="rooms-eyebrow">CHOOSE YOUR SPACE</span>
+
+    <div className="room-selector-list">
+      {rooms.map((item, index) => (
+        <button
+          key={item.number}
+          className={activeRoom === index ? "active" : ""}
+          onClick={() => setActiveRoom(index)}
+        >
+          <span>{item.number}</span>
+          <span>{item.name}</span>
+          <ArrowUpRight size={16} />
+        </button>
+      ))}
+    </div>
+
+    <h3>{room.name}</h3>
+
+    <p>{room.description}</p>
+
+    <div className="room-detail-line" />
+
+    <span className="room-detail">{room.detail}</span>
+  </div>
+</div>
       </section>
 
       <section className="rooms-manifesto">
