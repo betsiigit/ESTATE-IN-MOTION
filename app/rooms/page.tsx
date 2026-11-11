@@ -56,17 +56,21 @@ const rooms = [
     detail: "Stone finishes · Quiet details · Everyday ritual",
   },
 ];
-
 export default function RoomsPage() {
-  const [activeRoom, setActiveRoom] = useState(0);
-  const room = rooms[activeRoom];
+  const [activeRoom, setActiveRoom] = useState<number | null>(null);
+  const room = activeRoom !== null ? rooms[activeRoom] : null;
 
   const nextRoom = () =>
-    setActiveRoom((current) => (current + 1) % rooms.length);
+    setActiveRoom((current) =>
+      current === null ? 0 : (current + 1) % rooms.length
+    );
 
   const previousRoom = () =>
-    setActiveRoom((current) => (current - 1 + rooms.length) % rooms.length);
-
+    setActiveRoom((current) =>
+      current === null
+        ? rooms.length - 1
+        : (current - 1 + rooms.length) % rooms.length
+    );
   return (
     <main className="rooms-page">
       <header className="rooms-nav">
@@ -121,14 +125,14 @@ export default function RoomsPage() {
               <em>stay with you.</em>
             </h2>
           </div>
-          <span className="room-counter">
-            {room.number} <span>/ 04</span>
-          </span>
+         <span className="room-counter">
+  {room ? room.number : "00"} <span>/ 04</span>
+</span>
         </div>
 
 
 <div className="room-experience">
-  <Dollhouse activeRoom={room.name} />
+  <Dollhouse activeRoom={room?.name ?? "Overview"} />
 
   <div className="room-information">
     <span className="rooms-eyebrow">CHOOSE YOUR SPACE</span>
@@ -146,7 +150,8 @@ export default function RoomsPage() {
         </button>
       ))}
     </div>
-
+{room && (
+  <>
     <h3>{room.name}</h3>
 
     <p>{room.description}</p>
@@ -154,6 +159,8 @@ export default function RoomsPage() {
     <div className="room-detail-line" />
 
     <span className="room-detail">{room.detail}</span>
+  </>
+)}
   </div>
 </div>
       </section>
