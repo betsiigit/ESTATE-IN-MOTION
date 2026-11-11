@@ -11,48 +11,37 @@ import {
 import { useThree, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-
 function RoomCamera({ activeRoom }: { activeRoom: string }) {
- const { camera, controls: defaultControls } = useThree();
+  const { camera } = useThree();
   const controls = useRef<any>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  useEffect(() => {
-  const interval = setInterval(() => {
-    const orbit = controls.current;
-
-    if (!orbit) return;
-
-    console.log("CAMERA POSITION:", camera.position.toArray());
-    console.log("ROOM TARGET:", orbit.target.toArray());
-  }, 1000);
-
-  return () => clearInterval(interval);
-}, [camera]);
-
-  const destinations: Record<string, {
-    position: [number, number, number];
-    target: [number, number, number];
-  }> = {
-
-    "Overview": {
-  position: [12, 9, 12],
-  target: [0, 3, 0],
-},
+  const destinations: Record<
+    string,
+    {
+      position: [number, number, number];
+      target: [number, number, number];
+    }
+  > = {
+    Overview: {
+      position: [12, 9, 12],
+      target: [0, 3, 0],
+    },
     "The Living Room": {
       position: [-3, 3, 5],
       target: [-3, 1.5, 1],
     },
-"The Bedroom": {
-  position: [0.408, 5.25, 9.482],
-  target: [0, 3, 0],
-},
+    "The Bedroom": {
+      position: [-3, 6.5, 2],
+      target: [-3, 2.5, -5],
+    },
     "The Kitchen": {
-      position: [11.212, 3.796, 0.656],
-target: [0, 3, 0],
+      position: [3, 3, 5],
+      target: [3, 1.5, 1],
     },
     "The Bathroom": {
-      position: [-3, 3, -4],
-      target: [-3, 1.5, -2],
+      position: [0, 6.5, 2],
+      target: [0, 2.5, -5],
     },
   };
 
@@ -64,43 +53,44 @@ target: [0, 3, 0],
     camera.userData.destinationPosition = new THREE.Vector3(
       ...destination.position
     );
+
     camera.userData.destinationTarget = new THREE.Vector3(
       ...destination.target
     );
+
+    setIsAnimating(true);
   }, [activeRoom, camera]);
 
-//   useFrame(() => {
-//   const position = camera.userData.destinationPosition;
-//   const target = camera.userData.destinationTarget;
+  useFrame(() => {
+    if (!isAnimating || !controls.current) return;
 
-//   if (!position || !target) return;
+    const position = camera.userData.destinationPosition;
+    const target = camera.userData.destinationTarget;
+    const orbit = controls.current;
 
-//   camera.position.lerp(position, 0.035);
+    if (!position || !target) return;
 
-//   if (controls.current) {
-//     controls.current.target.lerp(target, 0.035);
-//     controls.current.update();
-//   }
-// });
+    camera.position.lerp(position, 0.035);
+    orbit.target.lerp(target, 0.035);
+    orbit.update();
 
-  // useFrame(() => {
-  //   const position = camera.userData.destinationPosition;
-  //   const target = camera.userData.destinationTarget;
+    if (
+      camera.position.distanceTo(position) < 0.03 &&
+      orbit.target.distanceTo(target) < 0.03
+    ) {
+      camera.position.copy(position);
+      orbit.target.copy(target);
+      orbit.update();
 
-  //   if (!position || !target) return;
-
-  //   camera.position.lerp(position, 0.035);
-
-  //   if (controls.current) {
-  //     controls.current.target.lerp(target, 0.035);
-  //     controls.current.update();
-  //   }
-  // });
+      setIsAnimating(false);
+    }
+  });
 
   return (
     <OrbitControls
       ref={controls}
       makeDefault
+      enabled={activeRoom === "Overview" && !isAnimating}
       target={[0, 3, 0]}
       minDistance={1}
       maxDistance={20}
@@ -111,6 +101,7 @@ target: [0, 3, 0],
     />
   );
 }
+
 
 function ApartmentModel() {
   const { scene } = useGLTF("/models/house_3d.glb");
