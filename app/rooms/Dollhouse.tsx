@@ -12,7 +12,7 @@ import {
 import * as THREE from "three";
 
 function ApartmentModel() {
-  const { scene } = useGLTF("/models/modern-flat-roof-villa.glb");
+  const { scene } = useGLTF("/models/house_3d.glb");
 
   const model = useMemo(() => {
     const clonedScene = scene.clone(true);
@@ -36,7 +36,7 @@ function ApartmentModel() {
     box.getCenter(center);
 
     const maxDimension = Math.max(size.x, size.y, size.z);
-    const modelScale = maxDimension > 0 ? 12 / maxDimension : 1;
+    const modelScale = maxDimension > 0 ? 9 / maxDimension : 1;
 
     return {
       scale: modelScale,
@@ -172,4 +172,4 @@ export default function Dollhouse({
   );
 }
 
-useGLTF.preload("/models/modern-flat-roof-villa.glb");
+useGLTF.preload("/models/house_3d.glb");
