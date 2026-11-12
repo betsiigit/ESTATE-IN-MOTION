@@ -76,15 +76,16 @@ const lifestyles = [
 ];
 
 const neighborhoods = [
-  {
-    name: "Bole",
-    subtitle: "THE CITY'S COSMOPOLITAN SIDE",
-    description:
-      "Discover contemporary homes, stylish cafés, shopping destinations and a lively urban atmosphere.",
-    image:
-      "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=1000&q=90",
-    tags: ["City life", "Dining", "Shopping"],
-  },
+ {
+  name: "Bole",
+  subtitle: "THE CITY'S COSMOPOLITAN SIDE",
+  description:
+    "Discover contemporary homes, stylish cafés, shopping destinations and a lively urban atmosphere.",
+  image:
+    "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=1000&q=90",
+  tags: ["City life", "Dining", "Shopping"],
+  propertyId: 1,
+},
   {
     name: "Old Airport",
     subtitle: "SPACE TO FEEL AT HOME",
@@ -171,6 +172,10 @@ function getWeatherIcon(code: number) {
 
 
 export default function JournalPage() {
+
+  
+
+
   const [activeLifestyle, setActiveLifestyle] = useState("city");
   const [activeNeighborhood, setActiveNeighborhood] = useState("Bole");
 
@@ -387,15 +392,15 @@ useEffect(() => {
             <div className="lifestyle-result-neighborhoods">
               <span>PLACES TO EXPLORE</span>
               {selectedLifestyle.neighborhoods.map((name) => (
-                <button
-                  key={name}
-                  onClick={() => {
-                    setActiveNeighborhood(name);
-                    document
-                      .getElementById("neighborhoods")
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
+               <button
+  key={name}
+  onClick={() => {
+    setActiveNeighborhood(name);
+    document
+      .getElementById("neighborhoods")
+      ?.scrollIntoView({ behavior: "smooth" });
+  }}
+>
                   {name} <ArrowUpRight size={15} />
                 </button>
               ))}
@@ -429,7 +434,7 @@ useEffect(() => {
                 className={
                   activeNeighborhood === place.name ? "active" : ""
                 }
-                onClick={() => setActiveNeighborhood(place.name)}
+               onClick={() => setActiveNeighborhood(place.name)}
               >
                 <span>0{index + 1}</span>
                 <strong>{place.name}</strong>
@@ -668,9 +673,15 @@ useEffect(() => {
           <br />
           Find <em>your place.</em>
         </h2>
-        <Link href="/properties">
-          EXPLORE PROPERTIES <ArrowRight size={17} />
-        </Link>
+       <Link
+  href={
+    activeNeighborhood === "Bole"
+      ? "/properties/1"
+      : "/properties"
+  }
+>
+  EXPLORE PROPERTIES <ArrowUpRight size={16} />
+</Link>
       </section>
     </main>
   );
