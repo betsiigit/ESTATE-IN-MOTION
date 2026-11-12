@@ -427,3 +427,23 @@
     height: 38px;
   }
 }
+ 
+.property-detail-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.property-detail-nav-links .property-back-link {
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .property-detail-nav-links {
+    gap: 12px;
+  }
+
+  .property-detail-nav-links .property-back-link {
+    font-size: 9px;
+  }
+}

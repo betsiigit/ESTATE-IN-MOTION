@@ -38,10 +38,16 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           ESTATE<span>IN MOTION</span>
         </Link>
 
-        <Link href="/properties" className="property-back-link">
-          <ArrowLeft size={16} />
-          ALL PROPERTIES
-        </Link>
+        <div className="property-detail-nav-links">
+  <Link href="/journal" className="property-back-link">
+    <ArrowLeft size={16} />
+    BACK TO JOURNAL
+  </Link>
+
+  <Link href="/properties" className="property-back-link">
+    ALL PROPERTIES
+  </Link>
+</div>
       </header>
 
      <section className="property-detail-hero">

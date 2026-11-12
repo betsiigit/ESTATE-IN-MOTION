@@ -673,11 +673,14 @@ useEffect(() => {
           <br />
           Find <em>your place.</em>
         </h2>
-       <Link
+   <Link
   href={
-    activeNeighborhood === "Bole"
-      ? "/properties/1"
-      : "/properties"
+    {
+      Bole: "/properties/1",
+      "Old Airport": "/properties/2",
+      Kazanchis: "/properties/4",
+      CMC: "/properties/3",
+    }[activeNeighborhood] || "/properties"
   }
 >
   EXPLORE PROPERTIES <ArrowUpRight size={16} />
