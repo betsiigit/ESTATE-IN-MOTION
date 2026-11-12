@@ -263,9 +263,24 @@ useEffect(() => {
 }, []);
 
 
-  return (
-    <main className="journal-page">
-      {/* HERO */}
+ return (
+  <main className="journal-page">
+    <header className="journal-nav">
+      <Link href="/" className="journal-nav-logo">
+        ESTATE<span>IN MOTION</span>
+      </Link>
+
+      <nav className="journal-nav-links">
+        <Link href="/">HOME</Link>
+        <Link href="/journal" className="active">JOURNAL</Link>
+        <Link href="/properties">PROPERTIES</Link>
+        <Link href="/rooms">SPACES</Link>
+        <Link href="/architecture">ARCHITECTURE</Link>
+        <Link href="/contact">CONTACT</Link>
+      </nav>
+    </header>
+
+    {/* HERO */}
       <section className="journal-hero">
         <div className="journal-hero-top">
           <span>ESTATE IN MOTION / JOURNAL</span>

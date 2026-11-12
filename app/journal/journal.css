@@ -1240,3 +1240,75 @@
     font-size: 52px;
   }
 }
+/* JOURNAL NAVIGATION */
+
+.journal-nav {
+  min-height: 82px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #171815;
+  border-bottom: 1px solid rgba(233, 229, 220, 0.12);
+  position: relative;
+  z-index: 20;
+}
+
+.journal-nav-logo {
+  color: #e9e5dc;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.journal-nav-logo span {
+  color: #b7a17c;
+  margin-left: 5px;
+  font-weight: 400;
+}
+
+.journal-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.journal-nav-links a {
+  color: #aaa89f;
+  text-decoration: none;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  transition: color 0.3s ease;
+}
+
+.journal-nav-links a:hover,
+.journal-nav-links a.active {
+  color: #b7a17c;
+}
+
+@media (max-width: 900px) {
+  .journal-nav {
+    padding: 20px 5%;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .journal-nav-links {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .journal-nav-links {
+    gap: 14px;
+  }
+
+  .journal-nav-links a {
+    font-size: 9px;
+  }
+}

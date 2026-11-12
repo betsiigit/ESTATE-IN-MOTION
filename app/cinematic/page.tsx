@@ -405,6 +405,7 @@ useEffect(() => {
           ESTATE<span>IN MOTION</span>
         </Link>
 <div className="cinematic-nav-center">
+  <Link href="/">HOME</Link>
   <Link href="/journal">JOURNAL</Link>
   <Link href="/properties">PROPERTIES</Link>
   <Link href="/rooms">SPACES</Link>
