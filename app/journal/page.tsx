@@ -1,7 +1,12 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  localPlaces,
+  getMapSearchUrl,
+  type PlaceCategory,
+} from "./places";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -139,7 +144,15 @@ export default function JournalPage() {
   const selectedLifestyle = lifestyles.find(
     (item) => item.id === activeLifestyle
   );
+const [activePlaceCategory, setActivePlaceCategory] =
+  useState<"All" | PlaceCategory>("All");
 
+const neighborhoodPlaces = localPlaces.filter(
+  (place) =>
+    place.neighborhood === activeNeighborhood &&
+    (activePlaceCategory === "All" ||
+      place.category === activePlaceCategory)
+);
   const suggestedNeighborhoods = selectedLifestyle
     ? neighborhoods.filter((place) =>
         selectedLifestyle.neighborhoods.includes(place.name)
@@ -363,57 +376,98 @@ export default function JournalPage() {
       <section className="journal-experiences">
         <div className="journal-heading-row">
           <div>
-            <span className="journal-section-label">03 / LIFE AROUND YOU</span>
+            <span className="journal-section-label">
+              03 / LIFE AROUND YOU
+            </span>
             <h2>
-              Make yourself
+              Your neighborhood,
               <br />
-              <em>at home.</em>
+              <em>your lifestyle.</em>
             </h2>
           </div>
           <p>
-            The best parts of a neighborhood are often found just outside
-            your front door.
+            Discover restaurants, cafés and places to stay around
+            the neighborhood you are exploring.
           </p>
         </div>
 
-        <div className="experience-grid">
+        <div className="local-place-heading">
           <div>
-            <Utensils />
-            <h3>Restaurants</h3>
-            <p>Discover places for memorable meals and evenings out.</p>
+            <MapPin size={16} />
+            <span>{activeNeighborhood}, Addis Ababa</span>
           </div>
-          <div>
-            <Coffee />
-            <h3>Cafés</h3>
-            <p>Find your next favorite coffee spot and meeting place.</p>
-          </div>
-          <div>
-            <Hotel />
-            <h3>Hotels</h3>
-            <p>Explore hospitality, stays and places to welcome guests.</p>
-          </div>
-          <div>
-            <Trees />
-            <h3>Leisure</h3>
-            <p>Explore green spaces, recreation and things to do.</p>
-          </div>
-          <div>
-            <CloudSun />
-            <h3>Local Weather</h3>
-            <p>See the conditions and forecast around your chosen area.</p>
-          </div>
-          <div>
-            <Compass />
-            <h3>Explore More</h3>
-            <p>Discover the places and experiences that make a neighborhood yours.</p>
-          </div>
+
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+              activeNeighborhood + ", Addis Ababa, Ethiopia"
+            )}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            EXPLORE ON MAP <ArrowUpRight size={15} />
+          </a>
         </div>
 
-        <p className="journal-data-note">
-          Local recommendations and live weather will be connected in the
-          next development stage.
-        </p>
+        <div className="place-filters">
+          {(["All", "Restaurant", "Cafe", "Hotel"] as const).map(
+            (category) => (
+              <button
+                key={category}
+                className={
+                  activePlaceCategory === category ? "active" : ""
+                }
+                onClick={() => setActivePlaceCategory(category)}
+              >
+                {category === "All" ? "ALL PLACES" : category.toUpperCase()}
+              </button>
+            )
+          )}
+        </div>
+
+        <div className="local-place-grid">
+          {neighborhoodPlaces.map((place) => (
+            <article className="local-place-card" key={place.name}>
+              <div className="local-place-icon">
+                {place.category === "Restaurant" ? (
+                  <Utensils />
+                ) : place.category === "Cafe" ? (
+                  <Coffee />
+                ) : (
+                  <Hotel />
+                )}
+              </div>
+
+              <span>{place.category.toUpperCase()}</span>
+              <h3>{place.name}</h3>
+              <p>{place.description}</p>
+
+              <a
+                href={getMapSearchUrl(place)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                FIND LOCATION <ArrowUpRight size={15} />
+              </a>
+            </article>
+          ))}
+        </div>
+
+        {neighborhoodPlaces.length === 0 && (
+          <p>No places found in this category yet.</p>
+        )}
+
+        <div className="journal-weather-placeholder">
+          <CloudSun />
+          <div>
+            <span>LOCAL WEATHER</span>
+            <h3>Discover the weather in {activeNeighborhood}</h3>
+            <p>
+              Live weather information for Addis Ababa is coming next.
+            </p>
+          </div>
+        </div>
       </section>
+
 
       {/* EDITORIAL STORIES */}
       <section className="journal-stories">
