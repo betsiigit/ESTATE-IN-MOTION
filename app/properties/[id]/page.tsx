@@ -18,10 +18,17 @@ export const instant = false;
 
 type PageProps = {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ from?: string }>;
 };
 
-export default async function PropertyDetailPage({ params }: PageProps) {
+export default async function PropertyDetailPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { id } = await params;
+  const { from } = await searchParams;
+
+  const cameFromJournal = from === "journal";
 
   const property = properties.find(
     (item) => item.id === Number(id)
@@ -37,12 +44,13 @@ export default async function PropertyDetailPage({ params }: PageProps) {
         <Link href="/" className="property-detail-logo">
           ESTATE<span>IN MOTION</span>
         </Link>
-
-        <div className="property-detail-nav-links">
-  <Link href="/journal" className="property-back-link">
-    <ArrowLeft size={16} />
-    BACK TO JOURNAL
-  </Link>
+<div className="property-detail-nav-links">
+  {cameFromJournal && (
+    <Link href="/journal" className="property-back-link">
+      <ArrowLeft size={16} />
+      BACK TO JOURNAL
+    </Link>
+  )}
 
   <Link href="/properties" className="property-back-link">
     ALL PROPERTIES
