@@ -1,12 +1,19 @@
 
-.journal-page {
-  --journal-bg: #e9e7df;
-  --journal-dark: #20231f;
-  --journal-muted: #777970;
-  --journal-accent: #a18a67;
+/* =========================================
+   ESTATE IN MOTION — JOURNAL
+========================================= */
 
-  background: var(--journal-bg);
-  color: var(--journal-dark);
+.journal-page {
+  --j-bg: #171815;
+  --j-panel: #20221e;
+  --j-panel-light: #292b25;
+  --j-cream: #e9e5dc;
+  --j-muted: #99978d;
+  --j-bronze: #b7a17c;
+  --j-line: rgba(233, 229, 220, 0.16);
+
+  background: var(--j-bg);
+  color: var(--j-cream);
   overflow: hidden;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -15,360 +22,853 @@
   box-sizing: border-box;
 }
 
+.journal-page button,
+.journal-page a {
+  font: inherit;
+}
+
+.journal-page img {
+  object-fit: cover;
+}
+
+/* =========================================
+   HERO
+========================================= */
+
 .journal-hero {
-  padding: 35px 6.5% 0;
+  padding: 28px 6.5% 0;
+  background:
+    radial-gradient(
+      ellipse at 80% 25%,
+      rgba(183, 161, 124, 0.09),
+      transparent 45%
+    ),
+    var(--j-bg);
 }
 
 .journal-hero-top {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(32, 35, 31, 0.25);
+  align-items: center;
+  padding-bottom: 19px;
+  border-bottom: 1px solid var(--j-line);
+  color: var(--j-muted);
   font-size: 9px;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
 }
 
-.journal-hero-content {
-  padding: 95px 0 55px;
+.journal-hero-main {
+  display: grid;
+  grid-template-columns: 0.88fr 1.12fr;
+  align-items: center;
+  gap: 6%;
+  padding: 85px 0 65px;
+}
+
+.journal-hero-copy {
+  position: relative;
+  z-index: 2;
 }
 
 .journal-eyebrow,
-.journal-section-heading > div > span,
-.journal-intro > span,
-.journal-quote > span,
-.journal-cta > span {
+.journal-section-label {
+  color: var(--j-bronze);
   font-size: 9px;
-  letter-spacing: 2.5px;
-  color: var(--journal-muted);
+  letter-spacing: 2.8px;
+  line-height: 1.8;
 }
 
-.journal-hero h1 {
-  margin: 28px 0 35px;
+.journal-hero-copy h1 {
+  margin: 27px 0;
   font-family: Georgia, serif;
-  font-size: clamp(90px, 15vw, 205px);
+  font-size: clamp(62px, 7.5vw, 112px);
   font-weight: 400;
-  line-height: 0.78;
-  letter-spacing: -11px;
+  line-height: 0.95;
+  letter-spacing: -5px;
 }
 
-.journal-hero h1 em,
-.journal-section-heading h2 em,
-.journal-quote h2 em {
-  color: var(--journal-accent);
+.journal-hero-copy h1 em,
+.journal-heading-row h2 em,
+.journal-intro h2 em,
+.journal-final h2 em {
+  color: var(--j-bronze);
   font-weight: 400;
 }
 
-.journal-hero-bottom {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 30px;
-}
-
-.journal-hero-bottom p {
-  max-width: 350px;
-  color: var(--journal-muted);
+.journal-hero-copy > p {
+  max-width: 390px;
+  color: var(--j-muted);
   font-size: 13px;
-  line-height: 1.9;
+  line-height: 1.95;
 }
 
-.journal-scroll {
-  display: flex;
+.journal-explore-link {
+  display: inline-flex;
   align-items: center;
-  gap: 18px;
-  padding-bottom: 10px;
-  color: var(--journal-dark);
+  gap: 22px;
+  margin-top: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--j-bronze);
+  color: var(--j-cream);
   text-decoration: none;
   font-size: 9px;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
+  transition: gap 0.3s;
 }
 
-.journal-hero-image {
+.journal-explore-link:hover {
+  gap: 32px;
+}
+
+.journal-explore-link svg {
+  color: var(--j-bronze);
+}
+
+.journal-hero-visual {
   position: relative;
-  width: 100%;
-  height: 620px;
+  min-height: 560px;
   overflow: hidden;
+  background: var(--j-panel);
 }
 
-.journal-hero-image img,
-.journal-card-image img {
-  object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
-.journal-hero-image:hover img,
-.journal-card:hover img {
-  transform: scale(1.035);
-}
-
-.journal-hero-image > span {
+.journal-hero-visual::after,
+.lifestyle-image::after,
+.neighborhood-feature-image::after,
+.journal-story-image::after {
   position: absolute;
-  z-index: 2;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    transparent 45%,
+    rgba(10, 11, 9, 0.68) 100%
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.journal-hero-visual img {
+  transition: transform 1.2s ease;
+}
+
+.journal-hero-visual:hover img {
+  transform: scale(1.04);
+}
+
+.journal-hero-caption {
+  position: absolute;
+  right: 25px;
   bottom: 25px;
-  left: 30px;
+  left: 25px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
   color: white;
-  font-size: 9px;
+  font-size: 8px;
   letter-spacing: 2px;
 }
 
-.journal-intro {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  align-items: center;
-  gap: 30px;
-  padding: 120px 10%;
+.journal-hero-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 0;
+  border-top: 1px solid var(--j-line);
+  border-bottom: 1px solid var(--j-line);
+  color: var(--j-muted);
+  font-size: 8px;
+  letter-spacing: 2px;
 }
 
-.journal-intro p {
-  font-family: Georgia, serif;
-  font-size: clamp(24px, 3vw, 42px);
-  line-height: 1.35;
+/* =========================================
+   INTRODUCTION
+========================================= */
+
+.journal-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 135px 15%;
   text-align: center;
 }
 
-.journal-intro > span:last-child {
-  text-align: right;
+.journal-intro h2 {
+  max-width: 950px;
+  margin: 35px 0 22px;
+  font-family: Georgia, serif;
+  font-size: clamp(36px, 5vw, 65px);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -1.5px;
 }
 
+.journal-intro > p {
+  max-width: 510px;
+  color: var(--j-muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* =========================================
+   SHARED SECTION HEADINGS
+========================================= */
+
+.journal-lifestyles,
+.journal-neighborhoods,
+.journal-experiences,
 .journal-stories {
-  padding: 100px 6.5%;
-  background: #f1efe9;
+  padding: 110px 6.5%;
 }
 
-.journal-section-heading {
+.journal-lifestyles,
+.journal-stories {
+  background: #20221e;
+}
+
+.journal-heading-row {
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
   margin-bottom: 55px;
 }
 
-.journal-section-heading h2 {
+.journal-heading-row h2 {
   margin: 20px 0 0;
   font-family: Georgia, serif;
-  font-size: clamp(42px, 6vw, 75px);
+  font-size: clamp(45px, 6vw, 76px);
   font-weight: 400;
+  line-height: 1.05;
   letter-spacing: -3px;
 }
 
-.journal-section-heading > span {
-  padding-bottom: 10px;
-  color: var(--journal-muted);
-  font-size: 9px;
+.journal-heading-row > p {
+  max-width: 320px;
+  margin-bottom: 5px;
+  color: var(--j-muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* =========================================
+   LIFESTYLE DISCOVERY
+========================================= */
+
+.lifestyle-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.lifestyle-card {
+  min-width: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--j-cream);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.lifestyle-card:hover {
+  transform: translateY(-5px);
+}
+
+.lifestyle-card.selected {
+  border-color: var(--j-bronze);
+}
+
+.lifestyle-image {
+  position: relative;
+  height: 340px;
+  overflow: hidden;
+  background: var(--j-panel-light);
+}
+
+.lifestyle-image img {
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.lifestyle-card:hover .lifestyle-image img {
+  transform: scale(1.07);
+}
+
+.lifestyle-number,
+.lifestyle-heart {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  color: white;
+}
+
+.lifestyle-number {
+  left: 18px;
+  font-size: 10px;
   letter-spacing: 2px;
 }
 
-.journal-filters {
+.lifestyle-heart {
+  right: 18px;
+}
+
+.lifestyle-card-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 19px 12px;
+}
+
+.lifestyle-card-info h3 {
+  margin: 0 0 8px;
+  font-family: Georgia, serif;
+  font-size: 23px;
+  font-weight: 400;
+}
+
+.lifestyle-card-info p {
+  margin: 0;
+  color: var(--j-muted);
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.lifestyle-card-info > svg {
+  flex-shrink: 0;
+  color: var(--j-bronze);
+}
+
+.lifestyle-result {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 35px;
+  padding: 30px;
+  border: 1px solid var(--j-line);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.lifestyle-result > div > span {
+  color: var(--j-bronze);
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.lifestyle-result h3 {
+  margin: 12px 0 8px;
+  font-family: Georgia, serif;
+  font-size: 27px;
+  font-weight: 400;
+}
+
+.lifestyle-result p {
+  margin: 0;
+  color: var(--j-muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.lifestyle-result-neighborhoods {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.lifestyle-result-neighborhoods button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--j-cream);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.lifestyle-result-neighborhoods button svg {
+  color: var(--j-bronze);
+}
+
+/* =========================================
+   NEIGHBORHOODS
+========================================= */
+
+.neighborhood-layout {
+  display: grid;
+  grid-template-columns: 0.65fr 1.35fr;
+  gap: 45px;
+  align-items: start;
+}
+
+.neighborhood-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.neighborhood-list button {
+  display: grid;
+  grid-template-columns: 35px 1fr 25px;
+  align-items: center;
+  gap: 15px;
+  padding: 27px 8px;
+  border: 0;
+  border-bottom: 1px solid var(--j-line);
+  background: transparent;
+  color: var(--j-muted);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.3s, padding 0.3s;
+}
+
+.neighborhood-list button:hover,
+.neighborhood-list button.active {
+  padding-left: 17px;
+  color: var(--j-cream);
+}
+
+.neighborhood-list button > span {
+  color: var(--j-bronze);
+  font-size: 9px;
+}
+
+.neighborhood-list button strong {
+  font-family: Georgia, serif;
+  font-size: 27px;
+  font-weight: 400;
+}
+
+.neighborhood-list button svg {
+  color: var(--j-bronze);
+}
+
+.neighborhood-feature {
+  min-width: 0;
+  background: var(--j-panel);
+}
+
+.neighborhood-feature-image {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+}
+
+.neighborhood-feature-image img {
+  transition: transform 0.8s ease;
+}
+
+.neighborhood-feature:hover .neighborhood-feature-image img {
+  transform: scale(1.04);
+}
+
+.neighborhood-feature-image > span {
+  position: absolute;
+  bottom: 22px;
+  left: 25px;
+  z-index: 2;
+  color: white;
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.neighborhood-feature-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 27px;
+}
+
+.neighborhood-feature-info > div > span {
+  color: var(--j-bronze);
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.neighborhood-feature-info h3 {
+  margin: 12px 0;
+  font-family: Georgia, serif;
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.neighborhood-feature-info p {
+  max-width: 470px;
+  color: var(--j-muted);
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+.neighborhood-feature-info > svg {
+  flex-shrink: 0;
+  color: var(--j-bronze);
+}
+
+.neighborhood-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
-  margin-bottom: 45px;
-  border-bottom: 1px solid rgba(32, 35, 31, 0.2);
+  gap: 8px;
+  margin-top: 18px;
 }
 
-.journal-filters button {
-  position: relative;
-  padding: 0 0 15px;
-  border: none;
-  background: none;
-  color: var(--journal-muted);
-  cursor: pointer;
+.neighborhood-tags span {
+  padding: 8px 12px;
+  border: 1px solid var(--j-line);
+  color: var(--j-muted);
   font-size: 9px;
-  letter-spacing: 1.5px;
+  letter-spacing: 0.5px;
 }
 
-.journal-filters button.active {
-  color: var(--journal-dark);
+/* =========================================
+   LOCAL EXPERIENCES
+========================================= */
+
+.journal-experiences {
+  background:
+    radial-gradient(
+      ellipse at 50% 100%,
+      rgba(183, 161, 124, 0.07),
+      transparent 55%
+    ),
+    var(--j-bg);
 }
 
-.journal-filters button.active::after {
-  position: absolute;
-  right: 0;
-  bottom: -1px;
-  left: 0;
-  height: 2px;
-  background: var(--journal-accent);
-  content: "";
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--j-line);
+  border-left: 1px solid var(--j-line);
 }
 
-.journal-grid {
+.experience-grid > div {
+  min-height: 210px;
+  padding: 30px;
+  border-right: 1px solid var(--j-line);
+  border-bottom: 1px solid var(--j-line);
+  transition: background 0.3s;
+}
+
+.experience-grid > div:hover {
+  background: rgba(183, 161, 124, 0.07);
+}
+
+.experience-grid svg {
+  width: 22px;
+  height: 22px;
+  color: var(--j-bronze);
+  stroke-width: 1.3;
+}
+
+.experience-grid h3 {
+  margin: 27px 0 10px;
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.experience-grid p {
+  max-width: 240px;
+  color: var(--j-muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.journal-data-note {
+  margin-top: 20px;
+  color: var(--j-muted);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+}
+
+/* =========================================
+   EDITORIAL STORIES
+========================================= */
+
+.journal-story-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 25px;
 }
 
-.journal-card-image {
+.journal-story-image {
   position: relative;
-  height: 360px;
+  height: 350px;
   overflow: hidden;
+  background: var(--j-panel-light);
 }
 
-.journal-card-image > span {
+.journal-story-image img {
+  transition: transform 0.9s ease;
+}
+
+.journal-story-card:hover .journal-story-image img {
+  transform: scale(1.06);
+}
+
+.journal-story-image > span,
+.journal-story-image > svg {
   position: absolute;
-  top: 18px;
-  left: 18px;
   z-index: 2;
   color: white;
+}
+
+.journal-story-image > span {
+  top: 18px;
+  left: 18px;
   font-size: 10px;
   letter-spacing: 2px;
 }
 
-.journal-card-image > svg {
-  position: absolute;
+.journal-story-image > svg {
   right: 18px;
   bottom: 18px;
-  z-index: 2;
-  color: white;
 }
 
-.journal-card-meta {
+.journal-story-meta {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  margin-top: 24px;
-  color: var(--journal-muted);
+  margin-top: 23px;
+  color: var(--j-bronze);
   font-size: 8px;
-  letter-spacing: 1.3px;
+  letter-spacing: 1.5px;
 }
 
-.journal-card h3 {
-  margin: 17px 0 10px;
+.journal-story-card h3 {
+  margin: 16px 0 10px;
   font-family: Georgia, serif;
-  font-size: clamp(23px, 2.4vw, 32px);
+  font-size: clamp(23px, 2.4vw, 31px);
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.journal-story-card > p {
+  max-width: 350px;
+  color: var(--j-muted);
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+/* =========================================
+   FINAL CALL TO ACTION
+========================================= */
+
+.journal-final {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 135px 20px;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(183, 161, 124, 0.13),
+      transparent 65%
+    ),
+    #11120f;
+  text-align: center;
+}
+
+.journal-final > span {
+  color: var(--j-bronze);
+  font-size: 9px;
+  letter-spacing: 2.5px;
+}
+
+.journal-final h2 {
+  margin: 30px 0;
+  font-family: Georgia, serif;
+  font-size: clamp(40px, 6vw, 76px);
   font-weight: 400;
   line-height: 1.2;
 }
 
-.journal-card > p {
-  max-width: 350px;
-  color: var(--journal-muted);
-  font-size: 12px;
-  line-height: 1.8;
-}
-
-.journal-quote {
-  padding: 150px 15%;
-  text-align: center;
-}
-
-.journal-quote h2 {
-  margin: 35px auto 0;
-  max-width: 900px;
-  font-family: Georgia, serif;
-  font-size: clamp(35px, 5vw, 65px);
-  font-weight: 400;
-  line-height: 1.3;
-}
-
-.journal-cta {
-  display: flex;
-  flex-direction: column;
+.journal-final a {
+  display: inline-flex;
   align-items: center;
-  padding: 110px 20px;
-  background: var(--journal-dark);
-  color: #f1efe9;
-  text-align: center;
-}
-
-.journal-cta > span {
-  color: #b7a17c;
-}
-
-.journal-cta h2 {
-  max-width: 650px;
-  margin: 30px 0;
-  font-family: Georgia, serif;
-  font-size: clamp(35px, 5vw, 65px);
-  font-weight: 400;
-}
-
-.journal-cta a {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+  gap: 18px;
   padding: 17px 25px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: white;
+  border: 1px solid rgba(233, 229, 220, 0.4);
+  color: var(--j-cream);
   text-decoration: none;
   font-size: 9px;
-  letter-spacing: 1.5px;
-  transition: background 0.3s, color 0.3s;
+  letter-spacing: 1.8px;
+  transition: all 0.3s;
 }
 
-.journal-cta a:hover {
-  background: #f1efe9;
-  color: var(--journal-dark);
+.journal-final a:hover {
+  border-color: var(--j-bronze);
+  background: var(--j-bronze);
+  color: var(--j-bg);
 }
 
-@media (max-width: 900px) {
-  .journal-hero-image {
-    height: 480px;
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1000px) {
+  .journal-hero-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
   }
 
-  .journal-grid {
+  .journal-hero-visual {
+    min-height: 460px;
+  }
+
+  .lifestyle-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .journal-intro {
-    grid-template-columns: 1fr;
-    text-align: center;
+  .lifestyle-image {
+    height: 390px;
   }
 
-  .journal-intro > span:last-child {
-    text-align: center;
+  .neighborhood-layout {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .neighborhood-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 20px;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 650px) {
   .journal-hero {
-    padding: 25px 5% 0;
+    padding: 22px 5% 0;
   }
 
-  .journal-hero-content {
-    padding: 75px 0 40px;
+  .journal-hero-top {
+    font-size: 7px;
+    letter-spacing: 1.2px;
   }
 
-  .journal-hero h1 {
-    font-size: 23vw;
-    letter-spacing: -5px;
+  .journal-hero-main {
+    grid-template-columns: 1fr;
+    gap: 35px;
+    padding: 70px 0 40px;
   }
 
-  .journal-hero-bottom {
-    align-items: flex-start;
-    flex-direction: column;
+  .journal-hero-copy h1 {
+    font-size: clamp(55px, 14vw, 85px);
+    letter-spacing: -3px;
   }
 
-  .journal-hero-image {
-    height: 350px;
+  .journal-hero-visual {
+    min-height: 390px;
+  }
+
+  .journal-hero-footer {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 15px 25px;
+    font-size: 7px;
   }
 
   .journal-intro {
-    padding: 85px 8%;
+    padding: 90px 8%;
   }
 
+  .journal-intro h2 {
+    font-size: 37px;
+  }
+
+  .journal-lifestyles,
+  .journal-neighborhoods,
+  .journal-experiences,
   .journal-stories {
     padding: 80px 5%;
   }
 
-  .journal-section-heading {
+  .journal-heading-row {
     align-items: flex-start;
     flex-direction: column;
     gap: 15px;
+    margin-bottom: 35px;
   }
 
-  .journal-grid {
+  .journal-heading-row h2 {
+    font-size: 48px;
+  }
+
+  .lifestyle-grid {
     grid-template-columns: 1fr;
-    gap: 45px;
+    gap: 25px;
   }
 
-  .journal-card-image {
-    height: 380px;
+  .lifestyle-image {
+    height: 400px;
   }
 
-  .journal-filters {
-    gap: 18px;
+  .lifestyle-result {
+    flex-direction: column;
   }
 
-  .journal-quote {
+  .lifestyle-result-neighborhoods {
+    padding-top: 20px;
+    border-top: 1px solid var(--j-line);
+  }
+
+  .neighborhood-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 0 10px;
+  }
+
+  .neighborhood-list button {
+    grid-template-columns: 20px 1fr 20px;
+    gap: 8px;
+    padding: 20px 3px;
+  }
+
+  .neighborhood-list button strong {
+    font-size: 20px;
+  }
+
+  .neighborhood-feature-image {
+    height: 300px;
+  }
+
+  .neighborhood-feature-info {
+    padding: 20px;
+  }
+
+  .experience-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .experience-grid > div {
+    min-height: 190px;
+    padding: 20px;
+  }
+
+  .experience-grid h3 {
+    font-size: 21px;
+  }
+
+  .journal-story-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .journal-story-image {
+    height: 370px;
+  }
+
+  .journal-final {
     padding: 100px 8%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journal-page *,
+  .journal-page *::before,
+  .journal-page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }
