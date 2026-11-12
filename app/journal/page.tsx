@@ -22,6 +22,13 @@ import {
   CloudSun,
   Home,
   Heart,
+  Cloud,
+CloudDrizzle,
+CloudRain,
+Droplets,
+Sun,
+Wind,
+RefreshCw,
 } from "lucide-react";
 import "./journal.css";
 
@@ -137,6 +144,32 @@ const stories = [
   },
 ];
 
+
+function getWeatherDescription(code: number) {
+  if (code === 0) return "Clear sky";
+  if ([1, 2].includes(code)) return "Partly cloudy";
+  if (code === 3) return "Overcast";
+  if ([45, 48].includes(code)) return "Foggy";
+  if ([51, 53, 55, 56, 57].includes(code)) return "Drizzle";
+  if ([61, 63, 65, 66, 67].includes(code)) return "Rain";
+  if ([71, 73, 75, 77].includes(code)) return "Snow";
+  if ([80, 81, 82].includes(code)) return "Rain showers";
+  if ([85, 86].includes(code)) return "Snow showers";
+  if ([95, 96, 99].includes(code)) return "Thunderstorm";
+  return "Current conditions";
+}
+
+function getWeatherIcon(code: number) {
+  if (code === 0) return Sun;
+  if ([1, 2, 3, 45, 48].includes(code)) return Cloud;
+  if ([51, 53, 55, 56, 57].includes(code)) return CloudDrizzle;
+  if ([61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99].includes(code)) {
+    return CloudRain;
+  }
+  return Cloud;
+}
+
+
 export default function JournalPage() {
   const [activeLifestyle, setActiveLifestyle] = useState("city");
   const [activeNeighborhood, setActiveNeighborhood] = useState("Bole");
@@ -162,6 +195,68 @@ const neighborhoodPlaces = localPlaces.filter(
   const currentNeighborhood =
     neighborhoods.find((place) => place.name === activeNeighborhood) ??
     neighborhoods[0];
+
+
+
+type WeatherData = {
+  temperature: number;
+  feelsLike: number;
+  humidity: number;
+  windSpeed: number;
+  weatherCode: number;
+  maxTemperature: number;
+  minTemperature: number;
+  rainChance: number;
+};
+
+const [weather, setWeather] = useState<WeatherData | null>(null);
+const [weatherLoading, setWeatherLoading] = useState(true);
+const [weatherError, setWeatherError] = useState(false);
+
+useEffect(() => {
+  const controller = new AbortController();
+
+  async function loadWeather() {
+    try {
+      setWeatherLoading(true);
+      setWeatherError(false);
+
+      const response = await fetch(
+        "https://api.open-meteo.com/v1/forecast?latitude=8.9806&longitude=38.7578&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=1&timezone=Africa%2FAddis_Ababa",
+        { signal: controller.signal }
+      );
+
+      if (!response.ok) {
+        throw new Error("Weather request failed");
+      }
+
+      const data = await response.json();
+
+      setWeather({
+        temperature: data.current.temperature_2m,
+        feelsLike: data.current.apparent_temperature,
+        humidity: data.current.relative_humidity_2m,
+        windSpeed: data.current.wind_speed_10m,
+        weatherCode: data.current.weather_code,
+        maxTemperature: data.daily.temperature_2m_max[0],
+        minTemperature: data.daily.temperature_2m_min[0],
+        rainChance: data.daily.precipitation_probability_max[0] ?? 0,
+      });
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      setWeatherError(true);
+    } finally {
+      if (!controller.signal.aborted) {
+        setWeatherLoading(false);
+      }
+    }
+  }
+
+  loadWeather();
+
+  return () => controller.abort();
+}, []);
+
 
   return (
     <main className="journal-page">
@@ -456,16 +551,71 @@ const neighborhoodPlaces = localPlaces.filter(
           <p>No places found in this category yet.</p>
         )}
 
-        <div className="journal-weather-placeholder">
-          <CloudSun />
-          <div>
-            <span>LOCAL WEATHER</span>
-            <h3>Discover the weather in {activeNeighborhood}</h3>
-            <p>
-              Live weather information for Addis Ababa is coming next.
-            </p>
-          </div>
+      
+<div className="journal-weather-card">
+  <div className="weather-card-top">
+    <div>
+      <span className="weather-eyebrow">ADDIS ABABA · LIVE WEATHER</span>
+      <h3>Weather around the city</h3>
+      <p>Current conditions across Addis Ababa</p>
+    </div>
+    <CloudSun size={25} />
+  </div>
+
+  {weatherLoading ? (
+    <p className="weather-status">Loading live weather...</p>
+  ) : weatherError || !weather ? (
+    <div className="weather-error">
+      <p>Weather is temporarily unavailable.</p>
+      <button onClick={() => window.location.reload()}>
+        <RefreshCw size={14} /> Try again
+      </button>
+    </div>
+  ) : (
+    <>
+      <div className="weather-main">
+        <div>
+          {(() => {
+            const WeatherIcon = getWeatherIcon(weather.weatherCode);
+            return <WeatherIcon size={42} strokeWidth={1.4} />;
+          })()}
+          <span>{getWeatherDescription(weather.weatherCode)}</span>
         </div>
+        <strong>{Math.round(weather.temperature)}°</strong>
+      </div>
+
+      <p className="weather-feels">
+        Feels like {Math.round(weather.feelsLike)}°C
+      </p>
+
+      <div className="weather-details">
+        <div>
+          <Droplets size={17} />
+          <span>Humidity</span>
+          <strong>{weather.humidity}%</strong>
+        </div>
+        <div>
+          <Wind size={17} />
+          <span>Wind</span>
+          <strong>{weather.windSpeed} km/h</strong>
+        </div>
+        <div>
+          <CloudRain size={17} />
+          <span>Rain chance</span>
+          <strong>{weather.rainChance}%</strong>
+        </div>
+        <div>
+          <Sun size={17} />
+          <span>High / Low</span>
+          <strong>
+            {Math.round(weather.maxTemperature)}° / {Math.round(weather.minTemperature)}°
+          </strong>
+        </div>
+      </div>
+    </>
+  )}
+</div>
+
       </section>
 
 
