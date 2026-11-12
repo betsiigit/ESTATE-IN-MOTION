@@ -404,8 +404,8 @@ useEffect(() => {
         <Link href="/" className="cinematic-logo">
           ESTATE<span>IN MOTION</span>
         </Link>
-
-       <div className="cinematic-nav-center">
+<div className="cinematic-nav-center">
+  <Link href="/journal">JOURNAL</Link>
   <Link href="/properties">PROPERTIES</Link>
   <Link href="/rooms">SPACES</Link>
   <Link href="/architecture">ARCHITECTURE</Link>

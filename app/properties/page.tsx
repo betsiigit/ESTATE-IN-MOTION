@@ -116,7 +116,7 @@ return matchesCategory && matchesLocation && matchesSearch;
           <Link href="/properties" className="current">Properties</Link>
           <Link href="/rooms">Spaces</Link>
           <Link href="/architecture">Architecture</Link>
-          <Link href="/cinematic">Experience</Link>
+        <Link href="/journal">Journal</Link>
         </nav>
 
         <Link href="/contact" className="properties-contact-link">

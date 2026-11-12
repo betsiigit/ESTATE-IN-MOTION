@@ -42,15 +42,16 @@ export default function ArchitecturePage() {
           ESTATE <span>IN MOTION</span>
         </Link>
 
-        <nav className="architecture-nav-links">
-          <Link href="/">HOME</Link>
-          <Link href="/properties">PROPERTIES</Link>
-          <Link href="/rooms">SPACES</Link>
-          <Link href="/architecture" className="active">
-            ARCHITECTURE
-          </Link>
-          <Link href="/contact">CONTACT</Link>
-        </nav>
+      <nav className="architecture-nav-links">
+  <Link href="/">HOME</Link>
+  <Link href="/journal">JOURNAL</Link>
+  <Link href="/properties">PROPERTIES</Link>
+  <Link href="/rooms">SPACES</Link>
+  <Link href="/architecture" className="active">
+    ARCHITECTURE
+  </Link>
+  <Link href="/contact">CONTACT</Link>
+</nav>
 
         <Link href="/properties" className="architecture-nav-cta">
           EXPLORE HOMES <ArrowUpRight size={14} />

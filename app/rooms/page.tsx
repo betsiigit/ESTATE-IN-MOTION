@@ -81,6 +81,7 @@ export default function RoomsPage() {
 
         <nav className="rooms-nav-links">
           <Link href="/">Home</Link>
+          <Link href="/journal">Journal</Link>
           <Link href="/properties">Properties</Link>
           <Link href="/rooms" className="current">Spaces</Link>
           <Link href="/architecture">Architecture</Link>

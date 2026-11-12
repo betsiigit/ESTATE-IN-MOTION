@@ -27,15 +27,16 @@ export default function ContactPage() {
           ESTATE <span>IN MOTION</span>
         </Link>
 
-        <nav className="contact-nav-links">
-          <Link href="/">HOME</Link>
-          <Link href="/properties">PROPERTIES</Link>
-          <Link href="/rooms">SPACES</Link>
-          <Link href="/architecture">ARCHITECTURE</Link>
-          <Link href="/contact" className="active">
-            CONTACT
-          </Link>
-        </nav>
+     <nav className="contact-nav-links">
+  <Link href="/">HOME</Link>
+  <Link href="/journal">JOURNAL</Link>
+  <Link href="/properties">PROPERTIES</Link>
+  <Link href="/rooms">SPACES</Link>
+  <Link href="/architecture">ARCHITECTURE</Link>
+  <Link href="/contact" className="active">
+    CONTACT
+  </Link>
+</nav>
 
         <Link href="/properties" className="contact-nav-cta">
           EXPLORE HOMES <ArrowUpRight size={14} />
